@@ -1,13 +1,11 @@
-import "./Navbar.css";
+import "./Navbar.css"
+import logo_img from "../../assets/images/logo.png"
 
 function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <div className="logo-box">T</div>
-        <h2>
-          Talento<span>11</span>
-        </h2>
+          <img src={logo_img} alt="logo_img" />
       </div>
 
       <ul className="navbar-links">

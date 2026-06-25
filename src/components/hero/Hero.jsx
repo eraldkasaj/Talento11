@@ -1,4 +1,5 @@
 import "./Hero.css";
+import hero_img from "../../assets/images/hero.png"
 
 function Hero() {
   return (
@@ -28,27 +29,9 @@ function Hero() {
 
       </div>
 
-      <div className="hero-right">
-
-        <div className="player-card">
-
-          <h3>Lorik Manaj </h3>
-
-          <p>CB • 18 vjeç</p>
-
-          <div className="player-stats">
-            <p>⭐ Highlights</p>
-            <p>🎥 12 video</p>
-            <p>👀 340 views</p>
-          </div>
-
-          <button>
-            View Profile
-          </button>
-
-        </div>
-
-      </div>
+    <div className="hero-right">
+  <img src={hero_img} alt="Hero" className="hero-img" />
+   </div>
 
     </section>
   );
