@@ -1,4 +1,5 @@
 import "./Pse_Talento11.css";
+import mockup_img from "../../assets/images/mockup.png"
 
 function Pse_Talento11() {
   return (
@@ -47,7 +48,7 @@ function Pse_Talento11() {
       </div>
 
       <div className="app-preview">
-        <h3>Mockup i aplikacionit</h3>
+         <img src={mockup_img} alt="mockup" className="mockup-img"/>
       </div>
 
     </section>
