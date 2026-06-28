@@ -1,5 +1,6 @@
 import "./Navbar.css"
 import logo_img from "../../assets/images/logo.png"
+import { Link } from "react-scroll";
 
 function Navbar() {
   return (
@@ -9,8 +10,26 @@ function Navbar() {
       </div>
 
       <ul className="navbar-links">
-        <li>Si funksionon ?</li>
-        <li>Pse Talento11 ?</li>
+        <li>
+          <Link
+      to="si-funksionon"
+      smooth={true}
+      duration={500}
+      offset={50}
+          >
+      Si funksionon ?
+         </Link>
+        </li>
+        <li>
+          <Link
+      to="pse-talento11"
+      smooth={true}
+      duration={500}
+      offset={50}
+        >
+      Pse Talento11 ?
+        </Link>
+      </li>
         <li>Player & Scout</li>
       </ul>
 

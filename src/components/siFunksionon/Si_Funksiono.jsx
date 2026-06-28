@@ -9,7 +9,7 @@ import {
 
 function Si_Funksionon() {
   return (
-    <section className="si-funksionon">
+    <section id="si-funksionon" className="si-funksionon">
 
       <div className="si-header">
         <h2>Si funksionon?</h2>
