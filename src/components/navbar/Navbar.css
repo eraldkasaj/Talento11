@@ -55,6 +55,16 @@
 .navbar-links li:hover {
   color: var(--text-primary);
 }
+.navbar-links a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.navbar-links a:hover {
+  color: var(--text-primary);
+}
 
 .navbar-buttons {
   display: flex;
