@@ -1,0 +1,175 @@
+.si-funksionon {
+  padding: 120px 100px;
+  background: var(--bg-primary);
+}
+
+/* ================= HEADER ================= */
+
+.si-header {
+  max-width: 800px;
+  margin: 0 auto 90px;
+
+  text-align: center;
+}
+
+.si-header h2 {
+  font-size: 3rem;
+  font-weight: 800;
+
+  color: var(--text-primary);
+
+  margin-bottom: 20px;
+}
+
+.si-header p {
+  font-size: 1.4rem;
+  line-height: 1.8;
+
+  color: var(--text-secondary);
+}
+
+/* ================= STEPS ================= */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  gap: 40px;
+}
+
+/* ================= STEP ================= */
+
+.step {
+  position: relative;
+
+  text-align: center;
+}
+
+/* Vijat lidhëse */
+
+.step:not(:last-child)::after {
+  content: "";
+
+  position: absolute;
+
+  top: 62px;
+  left: 72%;
+
+  width: 95%;
+  height: 2px;
+
+  background: linear-gradient(
+    to right,
+    var(--brand-teal),
+    var(--border)
+  );
+}
+
+/* ================= NUMBER ================= */
+
+.step-number {
+  width: 38px;
+  height: 38px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: var(--brand-teal);
+
+  color: var(--bg-primary);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* ================= ICON ================= */
+
+.step-icon {
+  width: 75px;
+  height: 75px;
+
+  margin: auto;
+  margin-bottom: 28px;
+
+  border-radius: 50%;
+
+  background: var(--bg-secondary);
+
+  border: 1px solid var(--border);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2.3rem;
+
+  color: var(--brand-teal);
+
+  transition: .35s;
+}
+
+.step:hover .step-icon {
+  background: var(--brand-teal);
+
+  color: var(--bg-primary);
+
+  transform: translateY(-8px);
+}
+
+/* ================= TEXT ================= */
+
+.step h3 {
+  font-size: 1.55rem;
+  font-weight: 700;
+
+  color: var(--text-primary);
+
+  margin-bottom: 18px;
+}
+
+.step p {
+  color: var(--text-secondary);
+
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width:1200px){
+
+.steps{
+  grid-template-columns:repeat(2,1fr);
+  row-gap:80px;
+}
+
+.step::after{
+  display:none;
+}
+
+}
+
+@media (max-width:768px){
+
+.si-funksionon{
+  padding:90px 25px;
+}
+
+.steps{
+  grid-template-columns:1fr;
+}
+
+.si-header h2{
+  font-size:2.3rem;
+}
+
+.si-header p{
+  font-size:1.1rem;
+}
+
+}

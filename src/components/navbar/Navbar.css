@@ -1,0 +1,119 @@
+.navbar {
+  width: 100%;
+  height: 60px;
+
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 40px;
+}
+
+/* LOGO */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo img {
+  height: 92px;
+  width: auto;
+
+  object-fit: contain;
+  cursor: pointer;
+
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo img:hover {
+  transform: scale(1.03);
+}
+
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+
+  list-style: none;
+}
+
+.navbar-links li {
+  color: var(--text-secondary);
+
+  font-size: 15px;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.navbar-links li:hover {
+  color: var(--text-primary);
+}
+.navbar-links a {
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.navbar-links a:hover {
+  color: var(--text-primary);
+}
+
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* HYR */
+
+.signin-btn {
+  background: rgba(255, 255, 255, 0.03);
+
+  border: 1px solid var(--border);
+  border-radius: 14px;
+
+  color: var(--text-primary);
+
+  padding: 14px 28px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signin-btn:hover {
+  border-color: var(--brand-green);
+}
+
+/* REGJISTROHU */
+
+.signup-btn {
+  border: none;
+
+  background: var(--brand-teal);
+  color: #000;
+
+  padding: 14px 28px;
+
+  border-radius: 14px;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background: var(--brand-green);
+}
