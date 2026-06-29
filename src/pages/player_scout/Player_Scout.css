@@ -76,11 +76,10 @@
     margin-bottom:35px;
 }
 
-.category-card button{
+.category-btn{
     width:100%;
     height:56px;
 
-    border:none;
     border-radius:14px;
 
     background:var(--brand-teal);
@@ -94,10 +93,11 @@
     font-size:1rem;
     font-weight:700;
 
+    text-decoration:none;
     cursor:pointer;
     transition:.3s;
 }
 
-.category-card button:hover{
+.category-btn:hover{
     background:var(--brand-green);
 }

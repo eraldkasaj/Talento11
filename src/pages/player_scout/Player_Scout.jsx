@@ -1,5 +1,6 @@
 import "./Player_Scout.css";
 import Navbar from "../../components/navbar/Navbar";
+import { Link } from "react-router-dom";
 
 import { LuUsers, LuSearch, LuArrowRight } from "react-icons/lu";
 
@@ -33,10 +34,10 @@ function Player_Scout() {
               statistikat dhe videot e tyre.
             </p>
 
-            <button>
-              Shiko Lojtarët
-              <LuArrowRight />
-            </button>
+          <Link to="/players" className="category-btn">
+            Shiko Lojtarët
+            <LuArrowRight />
+          </Link>
 
           </div>
 
