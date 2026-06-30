@@ -54,10 +54,10 @@ function Player_Scout() {
               me profesionistë të futbollit.
             </p>
 
-            <button>
+           <Link to="/scouts" className="category-btn">
               Shiko Scoutët
               <LuArrowRight />
-            </button>
+            </Link>
 
           </div>
 
