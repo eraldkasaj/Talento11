@@ -5,7 +5,7 @@ const players = [
     age: 18,
     position: "CB",
     videos: 12,
-    views: "2.4K",
+    views: "2400",
   },
 
   {
@@ -14,7 +14,7 @@ const players = [
     age: 17,
     position: "ST",
     videos: 8,
-    views: "1.8K",
+    views: "1800",
   },
 
   {
@@ -23,7 +23,7 @@ const players = [
     age: 19,
     position: "CM",
     videos: 15,
-    views: "3.1K",
+    views: "3100",
   },
 
   {
@@ -32,7 +32,7 @@ const players = [
     age: 18,
     position: "RW",
     videos: 9,
-    views: "1.5K",
+    views: "1500",
   },
 
   {
@@ -41,7 +41,7 @@ const players = [
     age: 20,
     position: "GK",
     videos: 11,
-    views: "4.2K",
+    views: "4200",
   },
 
   {
