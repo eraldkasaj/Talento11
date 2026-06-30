@@ -1,4 +1,5 @@
 import "./Player_Card.css";
+import { Link } from "react-router-dom";
 
 function PlayerCard({player}) {
   return (
@@ -23,7 +24,12 @@ function PlayerCard({player}) {
           <span>👁 {player.views}</span>
         </div>
 
-        <button>Shiko Profilin</button>
+        <Link
+          to={`/players/${player.id}`}
+          className="profile-btn"
+        >
+          Shiko Profilin
+       </Link>
 
       </div>
 
