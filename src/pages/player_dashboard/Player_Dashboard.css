@@ -1,0 +1,76 @@
+.player-dashboard{
+
+    min-height:100vh;
+
+    background:var(--bg-primary);
+
+    padding:120px 90px;
+}
+
+.dashboard-header{
+
+    text-align:center;
+
+    margin-bottom:70px;
+}
+
+.dashboard-header h1{
+
+    color:var(--text-primary);
+
+    font-size:3rem;
+
+    margin-bottom:15px;
+}
+
+.dashboard-header p{
+
+    color:var(--text-secondary);
+
+    font-size:1.2rem;
+}
+
+.dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+}
+
+.dashboard-box{
+
+    background:var(--bg-secondary);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:35px;
+
+    transition:.3s;
+    text-decoration:none;
+    color:inherit;
+}
+
+.dashboard-box:hover{
+
+    transform:translateY(-6px);
+
+    border-color:var(--brand-teal);
+}
+
+.dashboard-box h2{
+
+    color:var(--text-primary);
+
+    margin-bottom:18px;
+}
+
+.dashboard-box p{
+
+    color:var(--text-secondary);
+
+    line-height:1.7;
+}

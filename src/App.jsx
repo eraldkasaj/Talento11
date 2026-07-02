@@ -5,6 +5,17 @@ import Players from "./pages/players/Players";
 import Player_Profile from "./pages/player_profile/Player_Profile";
 import Scouts from "./pages/scouts/Scouts";
 import Scout_Profile from "./pages/scout_profile/Scout_Profile";
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Player_Dashboard from "./pages/player_dashboard/Player_Dashboard";
+import My_Profile from "./pages/my_profile/My_Profile";
+import Edit_Profile from "./pages/edit_profile/Edit_Profile";
+import Statistics from "./pages/statistics/Statistics";
+import Highlights from "./pages/highlights/Highlights";
+import Messages from "./pages/messages/Messages";
+import Visits from "./pages/visits/Visits";
+import Settings from "./pages/settings/Settings";
 import {Routes ,Route} from 'react-router-dom'
 
 
@@ -18,6 +29,17 @@ function App() {
     <Route path="/players/:id" element={<Player_Profile />} />
     <Route path="/scouts" element={<Scouts />} />
     <Route path="/scouts/:id" element={<Scout_Profile />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/register" element={<Register />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/player-dashboard" element={<Player_Dashboard />}/>
+    <Route path="/my-profile" element={<My_Profile />} />
+    <Route path="/edit-profile" element={<Edit_Profile />} />
+    <Route path="/statistics" element={<Statistics />} />
+    <Route path="/highlights" element={<Highlights />} />
+    <Route path="/messages" element={<Messages />} />
+    <Route path="/visits" element={<Visits />} />
+    <Route path="/settings" element={<Settings />} />
    </Routes>
       
     

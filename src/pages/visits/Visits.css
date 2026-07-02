@@ -1,0 +1,49 @@
+.visits-page{
+    min-height:100vh;
+    background:var(--bg-primary);
+    padding:120px 20px 60px;
+}
+
+.visits-container{
+    max-width:900px;
+    margin:auto;
+}
+
+.visits-container h1{
+    text-align:center;
+    color:var(--text-primary);
+    font-size:3rem;
+}
+
+.visits-container>p{
+    text-align:center;
+    color:var(--text-secondary);
+    margin:15px 0 40px;
+}
+
+.visit-list{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.visit-card{
+    background:var(--bg-secondary);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+}
+
+.visit-card h3{
+    color:var(--text-primary);
+}
+
+.visit-card span{
+    display:block;
+    color:var(--brand-teal);
+    margin:8px 0;
+}
+
+.visit-card p{
+    color:var(--text-secondary);
+}

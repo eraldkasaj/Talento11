@@ -1,0 +1,75 @@
+.statistics-page{
+    min-height:100vh;
+    background:var(--bg-primary);
+    padding:120px 20px 60px;
+}
+
+.statistics-container{
+    max-width:700px;
+    margin:auto;
+    background:var(--bg-secondary);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:40px;
+}
+
+.statistics-container h1{
+    text-align:center;
+    color:var(--text-primary);
+    font-size:3rem;
+    margin-bottom:10px;
+}
+
+.statistics-container p{
+    text-align:center;
+    color:var(--text-secondary);
+    margin-bottom:40px;
+}
+
+.statistics-form{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.form-group label{
+    color:var(--text-primary);
+    font-weight:600;
+}
+
+.form-group input{
+    width:100%;
+    padding:16px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:rgba(255,255,255,.03);
+    color:var(--text-primary);
+    font-size:1rem;
+    outline:none;
+}
+
+.form-group input:focus{
+    border-color:var(--brand-teal);
+}
+
+.statistics-form button{
+    height:55px;
+    border:none;
+    border-radius:12px;
+    background:var(--brand-teal);
+    color:var(--bg-primary);
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.statistics-form button:hover{
+    background:var(--brand-green);
+}
