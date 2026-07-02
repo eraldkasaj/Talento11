@@ -40,8 +40,12 @@ function Navbar() {
       </ul>
 
       <div className="navbar-buttons">
-        <button className="signin-btn">Hyr</button>
-        <button className="signup-btn">Rregjistrohu</button>
+        <Link to="/login" className="login-btn">
+            Hyr
+        </Link>
+       <Link to="/register" className="register-btn">
+          Regjistrohu
+      </Link>
       </div>
     </nav>
   );

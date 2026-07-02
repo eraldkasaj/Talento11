@@ -1,0 +1,85 @@
+.settings-page{
+    min-height:100vh;
+    background:var(--bg-primary);
+    padding:120px 20px 60px;
+}
+
+.settings-container{
+    max-width:900px;
+    margin:auto;
+}
+
+.settings-container h1{
+    text-align:center;
+    color:var(--text-primary);
+    font-size:3rem;
+}
+
+.settings-container>p{
+    text-align:center;
+    color:var(--text-secondary);
+    margin:15px 0 40px;
+}
+
+.settings-list{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+.setting-card{
+    background:var(--bg-secondary);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:25px;
+}
+
+.setting-card h3{
+    color:var(--text-primary);
+    margin-bottom:18px;
+}
+
+.setting-card p{
+    color:var(--text-secondary);
+    margin-bottom:20px;
+}
+
+.setting-card input{
+    width:100%;
+    height:52px;
+    padding:0 16px;
+    border:1px solid var(--border);
+    border-radius:12px;
+    background:rgba(255,255,255,.03);
+    color:var(--text-primary);
+    margin-bottom:18px;
+}
+
+.setting-card input:focus{
+    outline:none;
+    border-color:var(--brand-teal);
+}
+
+.setting-card button{
+    height:50px;
+    padding:0 28px;
+    border:none;
+    border-radius:12px;
+    background:var(--brand-teal);
+    color:var(--bg-primary);
+    font-weight:700;
+    cursor:pointer;
+}
+
+.setting-card button:hover{
+    background:var(--brand-green);
+}
+
+.danger button{
+    background:#dc2626;
+    color:white;
+}
+
+.danger button:hover{
+    background:#b91c1c;
+}

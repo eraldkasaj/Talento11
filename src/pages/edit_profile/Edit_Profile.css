@@ -1,0 +1,84 @@
+.edit-profile-page{
+    min-height: 100vh;
+    background: var(--bg-primary);
+    padding: 120px 20px 60px;
+}
+
+.edit-profile-container{
+    max-width: 700px;
+    margin: auto;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+}
+
+.edit-profile-container h1{
+    color: var(--text-primary);
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.edit-profile-container p{
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.edit-profile-form{
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label{
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width: 100%;
+    padding: 16px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color: var(--brand-teal);
+}
+
+.form-group textarea{
+    resize: vertical;
+    min-height: 140px;
+}
+
+.edit-profile-form button{
+    height: 55px;
+    border: none;
+    border-radius: 12px;
+    background: var(--brand-teal);
+    color: var(--bg-primary);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.edit-profile-form button:hover{
+    background: var(--brand-green);
+}
