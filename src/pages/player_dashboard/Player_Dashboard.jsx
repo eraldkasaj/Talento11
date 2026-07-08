@@ -1,52 +1,140 @@
 import "./Player_Dashboard.css";
-import { Link } from "react-router-dom";
+import { useEffect,useState } from "react";
+import { auth,db } from "../../firebase/firebase";
+import { ref,get } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
-function Player_Dashboard() {
-  return (
-    <section className="player-dashboard">
+function Player_Dashboard(){
 
-      <div className="dashboard-header">
+const navigate = useNavigate();
 
-        <h1>Paneli i Lojtarit</h1>
+const [userData,setUserData] = useState(null);
 
-        <p>
-          Menaxho profilin dhe aktivitetin tënd.
-        </p>
 
-      </div>
+useEffect(()=>{
 
-      <div className="dashboard-grid">
+const getUserData = async()=>{
 
-       <Link to="/my-profile" className="dashboard-box">
-            <h2>👤 Profili im</h2>
-            <p>Shiko dhe përditëso të dhënat.</p>
-       </Link>
+const user = auth.currentUser;
 
-       <Link to="/statistics" className="dashboard-card">
-          <p>Statistics</p></Link>
 
-        <Link to="/highlights" className="dashboard-card">
-        <p>Highlights</p>
-        </Link>
+if(user){
 
-       <Link to="/messages" className="dashboard-card">
-       <p>Messages</p>
-       </Link>
 
-        <Link to="/visits" className="dashboard-card">
-        <p>Vizitat</p>
-        </Link>
+const userRef = ref(db,"users/" + user.uid);
 
-       <Link to="/settings" className="dashboard-box">
 
-          <h2>⚙️ Cilësimet</h2>
-          <p>Menaxho llogarinë.</p>
-      </Link>
+const snapshot = await get(userRef);
 
-      </div>
 
-    </section>
-  );
+if(snapshot.exists()){
+
+
+setUserData(snapshot.val());
+
+
 }
+
+
+}
+
+
+}
+
+
+getUserData();
+
+
+},[]);
+
+
+
+return(
+
+<section className="player-dashboard">
+
+
+<h1>Paneli i Lojtarit</h1>
+
+
+{
+
+userData &&
+
+<h2>
+Mirësevjen {userData.name} {userData.surname}
+</h2>
+
+}
+
+
+
+<div className="dashboard-cards">
+
+
+
+<div 
+className="dashboard-card"
+onClick={()=>navigate("/my-profile")}
+>
+
+<h3>👤 Profili im</h3>
+
+<p>
+Menaxho të dhënat personale.
+</p>
+
+</div>
+
+
+
+
+<div className="dashboard-card">
+
+<h3>📊 Statistics</h3>
+
+<p>
+Shiko statistikat.
+</p>
+
+</div>
+
+
+
+
+<div className="dashboard-card">
+
+<h3>🎥 Highlights</h3>
+
+<p>
+Menaxho videot.
+</p>
+
+</div>
+
+
+
+
+<div className="dashboard-card">
+
+<h3>⚙️ Cilësimet</h3>
+
+<p>
+Menaxho llogarinë.
+</p>
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+)
+
+}
+
 
 export default Player_Dashboard;

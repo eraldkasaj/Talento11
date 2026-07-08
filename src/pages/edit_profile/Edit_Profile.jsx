@@ -1,85 +1,386 @@
 import "./Edit_Profile.css";
 
-function Edit_Profile() {
-  return (
-    <section className="edit-profile-page">
+import { useEffect,useState } from "react";
 
-      <div className="edit-profile-container">
+import { auth,db } from "../../firebase/firebase";
 
-        <h1>Edito Profilin</h1>
+import { ref,get,update } from "firebase/database";
 
-        <p>
-          Përditëso informacionin e profilit tënd.
-        </p>
+import { useNavigate } from "react-router-dom";
 
-        <form className="edit-profile-form">
 
-          <div className="form-group">
-            <label>Emri</label>
-            <input type="text" placeholder="Emri" />
-          </div>
 
-          <div className="form-group">
-            <label>Mbiemri</label>
-            <input type="text" placeholder="Mbiemri" />
-          </div>
+function Edit_Profile(){
 
-          <div className="form-group">
-            <label>Klubi</label>
-            <input type="text" placeholder="Klubi" />
-          </div>
 
-          <div className="form-group">
-            <label>Pozicioni</label>
-            <input type="text" placeholder="Pozicioni" />
-          </div>
+const navigate = useNavigate();
 
-          <div className="form-group">
-            <label>Mosha</label>
-            <input type="number" placeholder="Mosha" />
-          </div>
 
-          <div className="form-group">
-            <label>Gjatësia</label>
-            <input type="text" placeholder="1.87 m" />
-          </div>
+const [club,setClub] = useState("");
+const [position,setPosition] = useState("");
+const [height,setHeight] = useState("");
+const [age,setAge] = useState("");
+const [nationality,setNationality] = useState("");
+const [dominantFoot,setDominantFoot] = useState("");
+const [photoURL,setPhotoURL] = useState("");
 
-          <div className="form-group">
-            <label>Pesha</label>
-            <input type="text" placeholder="78 kg" />
-          </div>
 
-          <div className="form-group">
-            <label>Këmba Dominuese</label>
 
-            <select>
-              <option>Djathta</option>
-              <option>Majta</option>
-              <option>Të dyja</option>
-            </select>
 
-          </div>
+useEffect(()=>{
 
-          <div className="form-group">
-            <label>Biografia</label>
 
-            <textarea
-              rows="5"
-              placeholder="Shkruaj diçka për veten..."
-            ></textarea>
+const getProfile = async()=>{
 
-          </div>
 
-          <button type="submit">
-            Ruaj Ndryshimet
-          </button>
+const user = auth.currentUser;
 
-        </form>
 
-      </div>
+if(user){
 
-    </section>
-  );
+
+const profileRef = ref(db,"users/" + user.uid + "/profile");
+
+
+const snapshot = await get(profileRef);
+
+
+
+if(snapshot.exists()){
+
+
+const data = snapshot.val();
+
+
+setClub(data.club || "");
+
+setPosition(data.position || "");
+
+setHeight(data.height || "");
+
+setAge(data.age || "");
+
+setNationality(data.nationality || "");
+
+setDominantFoot(data.dominantFoot || "");
+
+setPhotoURL(data.photoURL || "");
+
+
 }
+
+
+}
+
+
+}
+
+
+
+getProfile();
+
+
+
+},[]);
+
+
+
+
+
+
+
+const saveProfile = async(e)=>{
+
+
+e.preventDefault();
+
+
+
+try{
+
+
+const user = auth.currentUser;
+
+
+
+await update(ref(db,"users/" + user.uid + "/profile"),{
+
+
+club,
+position,
+height,
+age,
+nationality,
+dominantFoot,
+photoURL
+
+
+});
+
+
+
+console.log("Profili u perditesua");
+
+
+navigate("/my-profile");
+
+
+
+}
+
+
+catch(error){
+
+
+console.log(error.message);
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+return(
+
+
+<section className="edit-profile-page">
+
+
+<div className="edit-profile-container">
+
+
+
+<h1>
+
+Ndrysho Profilin
+
+</h1>
+
+
+
+<p>
+
+Ploteso informacionet e profilit tend.
+
+</p>
+
+
+
+
+
+<form 
+className="edit-profile-form"
+onSubmit={saveProfile}
+>
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Foto URL</label>
+
+<input
+type="text"
+value={photoURL}
+onChange={(e)=>setPhotoURL(e.target.value)}
+/>
+
+</div>
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Klubi</label>
+
+<input
+type="text"
+value={club}
+onChange={(e)=>setClub(e.target.value)}
+/>
+
+</div>
+
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Pozicioni</label>
+
+<input
+type="text"
+value={position}
+onChange={(e)=>setPosition(e.target.value)}
+/>
+
+</div>
+
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Gjatesia</label>
+
+<input
+type="text"
+value={height}
+onChange={(e)=>setHeight(e.target.value)}
+/>
+
+</div>
+
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Mosha</label>
+
+<input
+type="number"
+value={age}
+onChange={(e)=>setAge(e.target.value)}
+/>
+
+</div>
+
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Kombesia</label>
+
+<input
+type="text"
+value={nationality}
+onChange={(e)=>setNationality(e.target.value)}
+/>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="form-group">
+
+
+<label>Kemba dominante</label>
+
+
+<select
+
+value={dominantFoot}
+
+onChange={(e)=>setDominantFoot(e.target.value)}
+
+>
+
+
+<option value="">
+
+Zgjidh
+
+</option>
+
+
+<option value="Right">
+
+E djathta
+
+</option>
+
+
+<option value="Left">
+
+E majta
+
+</option>
+
+
+<option value="Both">
+
+Te dyja
+
+</option>
+
+
+</select>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<button type="submit">
+
+Ruaj Profilin
+
+</button>
+
+
+
+
+
+</form>
+
+
+
+</div>
+
+
+
+</section>
+
+
+)
+
+
+}
+
+
 
 export default Edit_Profile;
