@@ -10,52 +10,72 @@ const navigate = useNavigate();
 
 const [userData,setUserData] = useState(null);
 
+
 useEffect(()=>{
 
 const getUserData = async()=>{
 
 const user = auth.currentUser;
 
+
 if(user){
+
 
 const userRef = ref(db,"users/" + user.uid);
 
+
 const snapshot = await get(userRef);
+
 
 if(snapshot.exists()){
 
+
 setUserData(snapshot.val());
 
-}
 
 }
 
+
 }
+
+
+}
+
 
 getUserData();
 
+
 },[]);
+
 
 
 return(
 
 <section className="player-dashboard">
 
+
 <h1>Paneli i Lojtarit</h1>
 
-{userData && (
+
+{
+
+userData &&
 
 <h2>
 Mirësevjen {userData.name} {userData.surname}
 </h2>
 
-)}
+}
+
+
 
 <div className="dashboard-cards">
 
+
+
 <div 
 className="dashboard-card"
-onClick={()=>navigate("/edit-profile")}
+onClick={()=>navigate("/my-profile")}
 >
 
 <h3>👤 Profili im</h3>
@@ -65,6 +85,8 @@ Menaxho të dhënat personale.
 </p>
 
 </div>
+
+
 
 
 <div className="dashboard-card">
@@ -78,6 +100,8 @@ Shiko statistikat.
 </div>
 
 
+
+
 <div className="dashboard-card">
 
 <h3>🎥 Highlights</h3>
@@ -87,6 +111,8 @@ Menaxho videot.
 </p>
 
 </div>
+
+
 
 
 <div className="dashboard-card">
@@ -99,12 +125,16 @@ Menaxho llogarinë.
 
 </div>
 
+
+
 </div>
+
 
 </section>
 
 )
 
 }
+
 
 export default Player_Dashboard;

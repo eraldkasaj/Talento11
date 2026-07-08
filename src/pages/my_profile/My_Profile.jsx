@@ -1,55 +1,250 @@
 import "./My_Profile.css";
+
 import { Link } from "react-router-dom";
 
-function My_Profile() {
-  return (
-    <section className="my-profile">
+import { useEffect,useState } from "react";
 
-      <h1>Profili Im</h1>
+import { auth,db } from "../../firebase/firebase";
 
-      <div className="profile-card">
+import { ref,get } from "firebase/database";
 
-        <div className="profile-image">
-          FOTO
-        </div>
 
-        <div className="profile-info">
+function My_Profile(){
 
-          <div className="info-row">
-            <span>Emri</span>
-            <h3>Lorik Manaj</h3>
-          </div>
 
-          <div className="info-row">
-            <span>Klubi</span>
-            <h3>Flamurtari FC</h3>
-          </div>
+const [player,setPlayer] = useState(null);
 
-          <div className="info-row">
-            <span>Pozicioni</span>
-            <h3>Centre Forward</h3>
-          </div>
 
-          <div className="info-row">
-            <span>Mosha</span>
-            <h3>19</h3>
-          </div>
 
-          <div className="info-row">
-            <span>Gjatësia</span>
-            <h3>1.87 m</h3>
-          </div>
+useEffect(()=>{
 
-        </div>
 
-      </div>
+const getProfile = async()=>{
 
-     <Link to="/edit-profile" className="edit-btn">
-        Edito Profilin
-    </Link>
 
-    </section>
-  );
+const user = auth.currentUser;
+
+
+if(user){
+
+
+const userRef = ref(db,"users/" + user.uid);
+
+
+const snapshot = await get(userRef);
+
+
+if(snapshot.exists()){
+
+
+setPlayer(snapshot.val());
+
+
 }
+
+
+}
+
+
+}
+
+
+
+getProfile();
+
+
+
+},[]);
+
+
+
+
+
+return(
+
+<section className="my-profile">
+
+
+<h1>
+Profili Im
+</h1>
+
+
+
+
+{
+
+player &&
+
+
+<div className="profile-card">
+
+
+
+{
+
+player.profile?.photoURL ?
+
+
+<img
+src={player.profile.photoURL}
+className="profile-image"
+/>
+
+
+:
+
+
+<div className="profile-image">
+
+FOTO
+
+</div>
+
+
+}
+
+
+
+
+
+<div className="profile-info">
+
+
+
+<div className="info-row">
+
+<span>Emri</span>
+
+<h3>
+
+{player.name} {player.surname}
+
+</h3>
+
+</div>
+
+
+
+
+
+
+<div className="info-row">
+
+<span>Klubi</span>
+
+<h3>
+
+{player.profile?.club}
+
+</h3>
+
+</div>
+
+
+
+
+
+
+<div className="info-row">
+
+<span>Pozicioni</span>
+
+<h3>
+
+{player.profile?.position}
+
+</h3>
+
+</div>
+
+
+
+
+
+
+<div className="info-row">
+
+<span>Mosha</span>
+
+<h3>
+
+{player.profile?.age}
+
+</h3>
+
+</div>
+
+
+
+
+
+
+
+<div className="info-row">
+
+<span>Gjatësia</span>
+
+<h3>
+
+{player.profile?.height} cm
+
+</h3>
+
+</div>
+
+
+
+
+
+
+<div className="info-row">
+
+<span>Këmba dominante</span>
+
+<h3>
+
+{player.profile?.dominantFoot}
+
+</h3>
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+}
+
+
+
+
+
+<Link 
+to="/edit-profile"
+className="edit-btn"
+>
+
+Edito Profilin
+
+</Link>
+
+
+
+
+</section>
+
+
+)
+
+
+}
+
 
 export default My_Profile;
