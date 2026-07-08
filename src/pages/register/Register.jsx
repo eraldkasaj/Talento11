@@ -1,191 +1,282 @@
 import "./Register.css";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import logo_img from "../../assets/images/logo.png";
+
 import { useState } from "react";
-import { auth, db } from "../../firebase/firebase";
+
+import { auth,db } from "../../firebase/firebase";
+
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, set } from "firebase/database";
 
+import { ref,set } from "firebase/database";
 
-function Register() {
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("");
 
 
-  const handleRegister = async (e) => {
+function Register(){
 
-    e.preventDefault();
 
-    try {
-      const userCredential =
-        await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+const navigate = useNavigate();
 
-      const user = userCredential.user;
 
-      await set(ref(db, "users/" + user.uid), {
-        name: name,
-        surname: surname,
-        email: email,
-        role: role,
-        createdAt: new Date().toISOString()
-      });
+const [name,setName] = useState("");
+const [surname,setSurname] = useState("");
+const [email,setEmail] = useState("");
+const [password,setPassword] = useState("");
+const [role,setRole] = useState("player");
 
-      console.log("User u krijua:", user);
 
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
-  return (
-    <section className="register">
-      <div className="register-card">
-        <img
-          src={logo_img}
-          alt="Talento11"
-          className="register-logo"
-        />
+const handleRegister = async(e)=>{
 
-        <h1>Krijo Llogari</h1>
-        <p>
-          Bashkohu me komunitetin Talento11.
-        </p>
 
+e.preventDefault();
 
 
+try{
 
-        <form
-          className="register-form"
-          onSubmit={handleRegister}
-        >
 
+const userCredential = await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
 
 
-          <input
-            type="text"
-            placeholder="Emri"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+const user = userCredential.user;
 
 
 
-          <input
-            type="text"
-            placeholder="Mbiemri"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-          />
+await set(ref(db,"users/" + user.uid),{
 
+name:name,
+surname:surname,
+email:email,
+role:role,
+createdAt:new Date().toISOString()
 
+});
 
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
 
 
+console.log("User u krijua:",user);
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
 
 
+if(role === "player"){
 
-          <input
-            type="password"
-            placeholder="Konfirmo Password"
-          />
+navigate("/player-dashboard");
 
+}
 
 
 
-          <div className="role-select">
+if(role === "scout"){
 
+navigate("/scout-dashboard");
 
-            <label>
+}
 
-              <input
-                type="radio"
-                name="role"
-                value="player"
-                onChange={(e) => setRole(e.target.value)}
-              />
 
-              Lojtar
 
-            </label>
+}
+catch(error){
 
+console.log(error.message);
 
+}
 
-            <label>
 
-              <input
-                type="radio"
-                name="role"
-                value="scout"
-                onChange={(e) => setRole(e.target.value)}
-              />
+}
 
-              Scout
 
-            </label>
 
 
-          </div>
+return(
 
 
+<section className="register">
 
 
-          <button type="submit">
+<div className="register-card">
 
-            Regjistrohu
 
-          </button>
+<img
+src={logo_img}
+alt="Talento11"
+className="register-logo"
+/>
 
 
 
-        </form>
+<h1>Krijo Llogari</h1>
 
 
+<p>
+Bashkohu me komunitetin Talento11.
+</p>
 
 
 
-        <span>
 
-          Ke tashmë llogari?
 
-          <Link to="/login">
+<form
+className="register-form"
+onSubmit={handleRegister}
+>
 
-            Hyr
 
-          </Link>
 
 
-        </span>
+<input
+type="text"
+placeholder="Emri"
+value={name}
+onChange={(e)=>setName(e.target.value)}
+/>
 
 
 
 
-      </div>
+<input
+type="text"
+placeholder="Mbiemri"
+value={surname}
+onChange={(e)=>setSurname(e.target.value)}
+/>
 
 
-    </section>
 
 
-  );
+
+<input
+type="email"
+placeholder="Email"
+value={email}
+onChange={(e)=>setEmail(e.target.value)}
+/>
+
+
+
+
+
+<input
+type="password"
+placeholder="Password"
+value={password}
+onChange={(e)=>setPassword(e.target.value)}
+/>
+
+
+
+
+
+<input
+type="password"
+placeholder="Konfirmo Password"
+/>
+
+
+
+
+
+
+
+<div className="role-select">
+
+
+
+<label>
+
+
+<input
+type="radio"
+name="role"
+value="player"
+checked={role === "player"}
+onChange={(e)=>setRole(e.target.value)}
+/>
+
+
+Lojtar
+
+
+</label>
+
+
+
+
+
+<label>
+
+
+<input
+type="radio"
+name="role"
+value="scout"
+checked={role === "scout"}
+onChange={(e)=>setRole(e.target.value)}
+/>
+
+
+Scout
+
+
+</label>
+
+
+
+</div>
+
+
+
+
+
+
+
+<button type="submit">
+
+Regjistrohu
+
+</button>
+
+
+
+
+</form>
+
+
+
+
+
+
+
+<span>
+
+
+Ke tashmë llogari?
+
+
+<Link to="/login">
+
+Hyr
+
+</Link>
+
+
+
+</span>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+)
 
 
 }

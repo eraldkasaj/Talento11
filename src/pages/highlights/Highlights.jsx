@@ -1,50 +1,175 @@
 import "./Highlights.css";
 
-function Highlights() {
-  return (
-    <section className="highlights-page">
+import { useState } from "react";
 
-      <div className="highlights-container">
+import { auth,db } from "../../firebase/firebase";
 
-        <h1>Highlights</h1>
+import { ref,push,set } from "firebase/database";
 
-        <p>
-          Menaxho videot e tua.
-        </p>
 
-        <div className="video-list">
 
-          <div className="video-card">
-            <h3>Video 1</h3>
-            <p>https://youtube.com/...</p>
-            <button>Fshi</button>
-          </div>
+function Highlights(){
 
-          <div className="video-card">
-            <h3>Video 2</h3>
-            <p>https://youtube.com/...</p>
-            <button>Fshi</button>
-          </div>
 
-        </div>
+const [title,setTitle] = useState("");
 
-        <form className="add-video">
+const [videoLink,setVideoLink] = useState("");
 
-          <input
-            type="text"
-            placeholder="Vendos linkun e videos..."
-          />
 
-          <button>
-            Shto Video
-          </button>
 
-        </form>
 
-      </div>
+const addVideo = async(e)=>{
 
-    </section>
-  );
+
+e.preventDefault();
+
+
+try{
+
+
+const user = auth.currentUser;
+
+
+const newVideoRef = push(ref(db,"highlightRequests"));
+
+
+
+await set(newVideoRef,{
+
+playerUid:user.uid,
+
+title:title,
+
+videoLink:videoLink,
+
+status:"pending",
+
+createdAt:new Date().toISOString()
+
+});
+
+
+
+console.log("Video u dergua per kontroll");
+
+
+setTitle("");
+
+setVideoLink("");
+
+
+
 }
+
+
+catch(error){
+
+
+console.log(error.message);
+
+
+}
+
+
+
+}
+
+
+
+
+
+return(
+
+<section className="highlights-page">
+
+
+<div className="highlights-container">
+
+
+
+<h1>
+
+Highlights
+
+</h1>
+
+
+
+<p>
+
+Dërgo videot e tua për kontroll.
+
+</p>
+
+
+
+
+
+<form 
+className="add-video"
+onSubmit={addVideo}
+>
+
+
+
+
+<input
+
+type="text"
+
+placeholder="Titulli videos"
+
+value={title}
+
+onChange={(e)=>setTitle(e.target.value)}
+
+/>
+
+
+
+
+<input
+
+type="text"
+
+placeholder="Google Drive link..."
+
+value={videoLink}
+
+onChange={(e)=>setVideoLink(e.target.value)}
+
+/>
+
+
+
+
+
+<button type="submit">
+
+Dërgo Video
+
+</button>
+
+
+
+
+</form>
+
+
+
+
+</div>
+
+
+
+</section>
+
+
+)
+
+
+}
+
+
 
 export default Highlights;

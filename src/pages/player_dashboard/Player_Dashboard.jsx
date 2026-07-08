@@ -87,31 +87,25 @@ Menaxho të dhënat personale.
 </div>
 
 
-
-
-<div className="dashboard-card">
-
+<div 
+className="dashboard-card"
+onClick={()=>navigate("/statistics")}
+>
 <h3>📊 Statistics</h3>
-
 <p>
 Shiko statistikat.
 </p>
-
 </div>
 
 
-
-
-<div className="dashboard-card">
-
-<h3>🎥 Highlights</h3>
-
+<div
+className="dashboard-card"
+onClick={()=>navigate("/highlights")}
+><h3>🎥 Highlights</h3>
 <p>
 Menaxho videot.
 </p>
-
 </div>
-
 
 
 
