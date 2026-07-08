@@ -44,13 +44,15 @@ FOTO
 
 
 
-
 <div className="profile-info">
 
 
 <h1>
+
 {player.name} {player.surname}
+
 </h1>
+
 
 
 <div className="profile-badge">
@@ -58,6 +60,7 @@ FOTO
 {player.profile?.position}
 
 </div>
+
 
 
 
@@ -70,25 +73,25 @@ FOTO
 
 
 
+
 <div className="profile-details">
 
 
 
 <div className="detail-box">
 
-<LuShield />
+<LuShield/>
 
 <div>
 
 <span>Klubi</span>
 
-<p>
-{player.profile?.club}
-</p>
+<p>{player.profile?.club}</p>
 
 </div>
 
 </div>
+
 
 
 
@@ -96,19 +99,18 @@ FOTO
 
 <div className="detail-box">
 
-<LuMapPin />
+<LuMapPin/>
 
 <div>
 
 <span>Shteti</span>
 
-<p>
-{player.profile?.nationality}
-</p>
+<p>{player.profile?.nationality}</p>
 
 </div>
 
 </div>
+
 
 
 
@@ -116,19 +118,18 @@ FOTO
 
 <div className="detail-box">
 
-<LuRuler />
+<LuRuler/>
 
 <div>
 
 <span>Gjatësia</span>
 
-<p>
-{player.profile?.height} cm
-</p>
+<p>{player.profile?.height} cm</p>
 
 </div>
 
 </div>
+
 
 
 
@@ -137,15 +138,13 @@ FOTO
 
 <div className="detail-box">
 
-<LuFootprints />
+<LuFootprints/>
 
 <div>
 
 <span>Këmba</span>
 
-<p>
-{player.profile?.dominantFoot}
-</p>
+<p>{player.profile?.dominantFoot}</p>
 
 </div>
 
@@ -161,6 +160,10 @@ FOTO
 
 
 </div>
+
+
+
+
 
 
 
@@ -172,9 +175,13 @@ FOTO
 
 <div className="stat-card">
 
-<LuTrophy />
+<LuTrophy/>
 
-<h2>0</h2>
+<h2>
+
+{player.stats?.matches || 0}
+
+</h2>
 
 <span>Ndeshje</span>
 
@@ -184,11 +191,17 @@ FOTO
 
 
 
+
+
 <div className="stat-card">
 
-<LuGoal />
+<LuGoal/>
 
-<h2>0</h2>
+<h2>
+
+{player.stats?.goals || 0}
+
+</h2>
 
 <span>Gola</span>
 
@@ -198,11 +211,17 @@ FOTO
 
 
 
+
+
 <div className="stat-card">
 
-<LuBadgePlus />
+<LuBadgePlus/>
 
-<h2>0</h2>
+<h2>
+
+{player.stats?.assists || 0}
+
+</h2>
 
 <span>Asiste</span>
 
@@ -212,19 +231,30 @@ FOTO
 
 
 
+
+
 <div className="stat-card">
 
-<LuPlay />
+<LuPlay/>
 
-<h2>0</h2>
+<h2>
 
-<span>Video</span>
+{player.stats?.minutes || 0}
+
+</h2>
+
+<span>Minuta</span>
 
 </div>
 
 
 
+
 </div>
+
+
+
+
 
 
 
@@ -234,8 +264,11 @@ FOTO
 
 
 <h2>
+
 Video Highlights
+
 </h2>
+
 
 
 <div className="video-placeholder">
@@ -246,6 +279,7 @@ Video do të vendosen këtu
 
 
 </div>
+
 
 
 

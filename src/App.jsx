@@ -9,6 +9,7 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Player_Dashboard from "./pages/player_dashboard/Player_Dashboard";
+import Scout_Dashboard from "./pages/scout_dashboard/Scout_Dashboard";
 import My_Profile from "./pages/my_profile/My_Profile";
 import Edit_Profile from "./pages/edit_profile/Edit_Profile";
 import Statistics from "./pages/statistics/Statistics";
@@ -33,6 +34,7 @@ function App() {
     <Route path="/register" element={<Register />} />
     <Route path="/dashboard" element={<Dashboard />} />
     <Route path="/player-dashboard" element={<Player_Dashboard />}/>
+    <Route path="/scout-dashboard" element={<Scout_Dashboard/>}/>
     <Route path="/my-profile" element={<My_Profile />} />
     <Route path="/edit-profile" element={<Edit_Profile />} />
     <Route path="/statistics" element={<Statistics />} />
