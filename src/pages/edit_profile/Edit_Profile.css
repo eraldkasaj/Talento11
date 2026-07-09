@@ -82,3 +82,19 @@
 .edit-profile-form button:hover{
     background: var(--brand-green);
 }
+
+.preview-image{
+
+width:160px;
+
+height:160px;
+
+object-fit:cover;
+
+border-radius:20px;
+
+margin-top:20px;
+
+border:2px solid var(--brand-teal);
+
+}

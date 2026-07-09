@@ -9,7 +9,6 @@ import { ref,get,update } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 
 
-
 function Edit_Profile(){
 
 
@@ -23,7 +22,6 @@ const [age,setAge] = useState("");
 const [nationality,setNationality] = useState("");
 const [dominantFoot,setDominantFoot] = useState("");
 const [photoURL,setPhotoURL] = useState("");
-
 
 
 
@@ -43,7 +41,6 @@ const profileRef = ref(db,"users/" + user.uid + "/profile");
 
 
 const snapshot = await get(profileRef);
-
 
 
 if(snapshot.exists()){
@@ -76,12 +73,69 @@ setPhotoURL(data.photoURL || "");
 }
 
 
-
 getProfile();
 
 
-
 },[]);
+
+
+
+
+
+
+const uploadImage = async(e)=>{
+
+
+const file = e.target.files[0];
+
+
+if(!file){
+
+return;
+
+}
+
+
+
+const formData = new FormData();
+
+
+formData.append("file",file);
+
+formData.append("upload_preset","talento11_players");
+
+
+
+const response = await fetch(
+
+"https://api.cloudinary.com/v1_1/xqdb7tam/image/upload",
+
+{
+
+method:"POST",
+
+body:formData
+
+}
+
+);
+
+
+
+const data = await response.json();
+
+
+
+setPhotoURL(data.secure_url);
+
+
+
+console.log(data.secure_url);
+
+
+}
+
+
 
 
 
@@ -95,12 +149,10 @@ const saveProfile = async(e)=>{
 e.preventDefault();
 
 
-
 try{
 
 
 const user = auth.currentUser;
-
 
 
 await update(ref(db,"users/" + user.uid + "/profile"),{
@@ -125,7 +177,6 @@ console.log("Profili u perditesua");
 navigate("/my-profile");
 
 
-
 }
 
 
@@ -138,8 +189,9 @@ console.log(error.message);
 }
 
 
-
 }
+
+
 
 
 
@@ -156,13 +208,11 @@ return(
 <div className="edit-profile-container">
 
 
-
 <h1>
 
 Ndrysho Profilin
 
 </h1>
-
 
 
 <p>
@@ -187,15 +237,39 @@ onSubmit={saveProfile}
 
 <div className="form-group">
 
-<label>Foto URL</label>
+
+<label>Foto Profili</label>
+
 
 <input
-type="text"
-value={photoURL}
-onChange={(e)=>setPhotoURL(e.target.value)}
+
+type="file"
+
+accept="image/*"
+
+onChange={uploadImage}
+
 />
 
+
+{
+
+photoURL &&
+
+<img
+
+src={photoURL}
+
+className="preview-image"
+
+/>
+
+}
+
+
 </div>
+
+
 
 
 
@@ -279,6 +353,7 @@ onChange={(e)=>setAge(e.target.value)}
 
 
 
+
 <div className="form-group">
 
 <label>Kombesia</label>
@@ -290,6 +365,7 @@ onChange={(e)=>setNationality(e.target.value)}
 />
 
 </div>
+
 
 
 
@@ -345,9 +421,7 @@ Te dyja
 </select>
 
 
-
 </div>
-
 
 
 
@@ -380,7 +454,6 @@ Ruaj Profilin
 
 
 }
-
 
 
 export default Edit_Profile;
