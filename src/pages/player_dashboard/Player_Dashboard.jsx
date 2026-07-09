@@ -10,6 +10,12 @@ import { useNavigate } from "react-router-dom";
 
 import { signOut } from "firebase/auth";
 
+import {
+LuPencil,
+LuLogOut,
+LuPlay
+} from "react-icons/lu";
+
 
 
 function Player_Dashboard(){
@@ -22,10 +28,11 @@ const [userData,setUserData] = useState(null);
 
 
 
+
 useEffect(()=>{
 
 
-const getUserData = async()=>{
+const getUser = async()=>{
 
 
 const user = auth.currentUser;
@@ -34,10 +41,7 @@ const user = auth.currentUser;
 if(user){
 
 
-const userRef = ref(db,"users/" + user.uid);
-
-
-const snapshot = await get(userRef);
+const snapshot = await get(ref(db,"users/" + user.uid));
 
 
 if(snapshot.exists()){
@@ -56,7 +60,7 @@ setUserData(snapshot.val());
 
 
 
-getUserData();
+getUser();
 
 
 },[]);
@@ -65,10 +69,8 @@ getUserData();
 
 
 
+
 const logout = async()=>{
-
-
-try{
 
 
 await signOut(auth);
@@ -80,16 +82,7 @@ navigate("/login");
 }
 
 
-catch(error){
 
-
-console.log(error.message);
-
-
-}
-
-
-}
 
 
 
@@ -102,57 +95,305 @@ return(
 <section className="player-dashboard">
 
 
-<h1>Paneli i Lojtarit</h1>
+
+<div className="player-card">
 
 
 
-{
-
-
-userData && (
-
-
-<h2>
-
-Mirësevjen {userData.name} {userData.surname}
-
-</h2>
-
-
-)
-
-}
 
 
 
-<button onClick={logout}>
+<div className="profile-actions">
 
-Dil
+
+<button onClick={()=>navigate("/edit-profile")}>
+
+<LuPencil/>
+
+Edit
 
 </button>
 
 
 
+<button onClick={logout}>
+
+<LuLogOut/>
+
+Logout
+
+</button>
 
 
-<div className="dashboard-cards">
+
+</div>
 
 
 
 
 
-<div 
-className="dashboard-card"
-onClick={()=>navigate("/my-profile")}
->
 
 
-<h3>👤 Profili im</h3>
+
+
+
+<div className="profile-top">
+
+
+
+
+
+<div className="photo-box">
+
+
+{
+
+userData?.profile?.photoURL ?
+
+
+<img src={userData.profile.photoURL}/>
+
+
+:
+
+
+<span>Foto</span>
+
+
+}
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div className="player-details">
+
+
+
+<div className="name-row">
+
+
+<h1>
+
+{userData?.name} {userData?.surname}
+
+</h1>
+
+
+
+<span>
+
+Verified
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+<p className="club">
+
+🏟️ {userData?.profile?.club}
+
+</p>
+
+
+
+
+
+
+
+
+
+
+<div className="details-grid">
+
+
+
+
+
+
+<div>
+
+
+<strong>
+
+{userData?.profile?.age}
+
+</strong>
+
+
+<p>Mosha</p>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<strong>
+
+{userData?.profile?.height} cm
+
+</strong>
+
+
+<p>Lartësia</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+
+<strong>
+
+{userData?.profile?.position}
+
+</strong>
+
+
+<p>Pozicioni</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+
+<strong>
+
+{userData?.profile?.nationality}
+
+</strong>
+
+
+<p>Kombësia</p>
+
+
+</div>
+
+
+
+
+
+
+<div>
+
+
+<strong>
+
+{userData?.profile?.dominantFoot}
+
+</strong>
+
+
+<p>Këmba</p>
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="profile-tabs">
+
+
+<p className="active">
+
+Përmbledhje
+
+</p>
+
+
+<p>Statistikat</p>
+
+
+<p>Media</p>
+
+
+<p>Karriera</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="about">
+
+
+<h3>
+
+Rreth lojtarit
+
+</h3>
 
 
 <p>
 
-Shiko profilin tënd.
+Profili zyrtar i lojtarit në Talento11.
+Këtu shfaqen të dhënat sportive dhe karriera.
 
 </p>
 
@@ -164,20 +405,133 @@ Shiko profilin tënd.
 
 
 
-<div 
-className="dashboard-card"
-onClick={()=>navigate("/statistics")}
+
+
+
+
+<div className="season">
+
+
+<h3>
+
+Statistikat (Sezoni aktual)
+
+</h3>
+
+
+
+
+<div className="season-grid">
+
+
+<div>
+
+<strong>0</strong>
+
+<p>Ndeshje</p>
+
+</div>
+
+
+
+<div>
+
+<strong>0</strong>
+
+<p>Gola</p>
+
+</div>
+
+
+
+<div>
+
+<strong>0</strong>
+
+<p>Asist</p>
+
+</div>
+
+
+
+<div>
+
+<strong>0</strong>
+
+<p>Kartona</p>
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+<div className="highlight-section">
+
+
+<h3>
+
+Highlights
+
+</h3>
+
+
+
+<div className="highlight-grid">
+
+
+{
+
+
+userData?.profile?.videoURL ?
+
+
+<video
+
+src={userData.profile.videoURL}
+
+controls
+
+className="player-video"
+
 >
 
 
-<h3>📊 Statistics</h3>
+</video>
+
+
+:
+
+
+<div className="empty-video">
+
+
+<LuPlay/>
 
 
 <p>
 
-Shiko statistikat.
+Nuk ka video akoma
 
 </p>
+
+
+</div>
+
+
+}
+
+
+
+</div>
+
 
 
 </div>
@@ -186,48 +540,6 @@ Shiko statistikat.
 
 
 
-
-<div 
-className="dashboard-card"
-onClick={()=>navigate("/highlights")}
->
-
-
-<h3>🎥 Highlights</h3>
-
-
-<p>
-
-Menaxho videot.
-
-</p>
-
-
-</div>
-
-
-
-
-
-
-
-<div 
-className="dashboard-card"
-onClick={()=>navigate("/settings")}
->
-
-
-<h3>⚙️ Cilësimet</h3>
-
-
-<p>
-
-Menaxho llogarinë.
-
-</p>
-
-
-</div>
 
 
 
