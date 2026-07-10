@@ -105,6 +105,7 @@ font-weight:700;
 
 
 .form-group input,
+.form-group textarea,
 .form-group select{
 
 height:65px;
@@ -295,5 +296,15 @@ width:100%;
 
 }
 
+
+}
+
+.form-group textarea{
+
+resize:vertical;
+
+min-height:110px;
+
+font-family:inherit;
 
 }
