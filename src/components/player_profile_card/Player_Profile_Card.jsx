@@ -1,289 +1,500 @@
-import "./Player_Profile_Card.css";
+import "../../pages/player_dashboard/Player_Dashboard.css";
+
+import { useEffect,useState } from "react";
+
+import { useParams } from "react-router-dom";
+
+import { db } from "../../firebase/firebase";
+
+import { ref,get } from "firebase/database";
 
 import {
-LuMapPin,
-LuShield,
-LuRuler,
 LuFootprints,
-LuTrophy,
-LuGoal,
-LuBadgePlus,
+LuMapPin,
 LuPlay,
+LuShield
 } from "react-icons/lu";
 
 
-function Player_Profile_Card({ player }){
+const statItems=[
+
+["matches","Ndeshje"],
+["goals","Gola"],
+["assists","Asist"],
+["yellowCards","Kartona të verdhë"],
+["redCards","Kartona të kuq"]
+
+];
 
 
-return(
-
-<section className="player-profile-card">
+const detailedStatItems=[...statItems,["minutes","Minuta të luajtura"]];
 
 
-<div className="profile-header">
+const getPitchZone=(position)=>{
 
 
-{
+const pos=position?.trim().toUpperCase();
 
-player.profile?.photoURL ?
 
-<img
-src={player.profile.photoURL}
-className="profile-image"
-/>
+if(["GK","GOALKEEPER","PORTIER"].includes(pos)) return "goalkeeper";
 
-:
+if(["CB","LB","RB","DEF"].includes(pos)) return "defender";
 
-<div className="profile-image">
+if(["CM","CDM","CAM","MID"].includes(pos)) return "midfielder";
 
-FOTO
 
-</div>
+return "forward";
+
 
 }
 
 
 
-<div className="profile-info">
+function Player_Profile(){
 
 
-<h1>
-
-{player.name} {player.surname}
-
-</h1>
+const {id}=useParams();
 
 
+const [player,setPlayer]=useState(null);
 
-<div className="profile-badge">
 
-{player.profile?.position}
+const [activeTab,setActiveTab]=useState("Përmbledhje");
+
+
+
+useEffect(()=>{
+
+
+const getPlayer=async()=>{
+
+
+const snapshot=await get(ref(db,`users/${id}`));
+
+
+if(snapshot.exists()){
+
+setPlayer(snapshot.val());
+
+}
+
+
+}
+
+
+getPlayer();
+
+
+},[id]);
+
+
+
+if(!player){
+
+return <p>Duke ngarkuar...</p>
+
+}
+
+
+
+const profile=player.profile || {};
+
+const stats=player.stats || {};
+
+
+const fullName=`${player.name} ${player.surname}`;
+
+
+const club=profile.club || "Klubi nuk është vendosur";
+
+
+const league=profile.league || "Superliga Shqiptare U-19";
+
+
+const pitchZone=getPitchZone(profile.position);
+
+
+return(
+
+
+<main className="talento-player-dashboard">
+
+
+<section className="talento-player-panel">
+
+
+
+<header className="talento-player-hero">
+
+
+<div className="talento-player-photo">
+
+
+{
+
+profile.photoURL ?
+
+<img src={profile.photoURL} alt={fullName}/>
+
+:
+
+<span>{fullName.slice(0,2)}</span>
+
+
+}
+
 
 </div>
 
 
 
 
-<p className="profile-age">
+<div className="talento-player-summary">
 
-{player.profile?.age} vjeç
+
+
+<div className="talento-player-name-row">
+
+
+<h1>{fullName}</h1>
+
+
+<span className="talento-player-verified">
+
+Verified
+
+</span>
+
+
+</div>
+
+
+
+<p className="talento-player-club">
+
+<LuShield/> {club}
 
 </p>
 
 
 
+<p className="talento-player-league">
+
+🇦🇱 {league}
+
+</p>
 
 
-<div className="profile-details">
 
+<div className="talento-player-facts">
 
-
-<div className="detail-box">
-
-<LuShield/>
 
 <div>
 
-<span>Klubi</span>
+<strong>{profile.age || "—"}</strong>
 
-<p>{player.profile?.club}</p>
-
-</div>
+<span>Mosha</span>
 
 </div>
 
 
-
-
-
-
-<div className="detail-box">
-
-<LuMapPin/>
 
 <div>
 
-<span>Shteti</span>
+<strong>{profile.height ? `${profile.height} cm`:"—"}</strong>
 
-<p>{player.profile?.nationality}</p>
-
-</div>
+<span>Lartësia</span>
 
 </div>
 
 
-
-
-
-
-<div className="detail-box">
-
-<LuRuler/>
 
 <div>
 
-<span>Gjatësia</span>
+<strong>{profile.position || "—"}</strong>
 
-<p>{player.profile?.height} cm</p>
-
-</div>
+<span>Pozicioni</span>
 
 </div>
 
 
 
-
-
-
-
-<div className="detail-box">
-
-<LuFootprints/>
 
 <div>
 
-<span>Këmba</span>
+<strong><LuMapPin/> {profile.nationality || "—"}</strong>
 
-<p>{player.profile?.dominantFoot}</p>
-
-</div>
+<span>Kombësia</span>
 
 </div>
 
 
 
+<div>
 
-</div>
+<strong><LuFootprints/> {profile.dominantFoot || "—"}</strong>
 
-
-</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div className="stats-grid">
-
-
-
-<div className="stat-card">
-
-<LuTrophy/>
-
-<h2>
-
-{player.stats?.matches || 0}
-
-</h2>
-
-<span>Ndeshje</span>
+<span>Këmba e preferuar</span>
 
 </div>
 
 
 
+<div>
+
+<strong>{profile.weight ? `${profile.weight} kg`:"—"}</strong>
+
+<span>Pesha</span>
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</header>
 
 
 
 
-<div className="stat-card">
 
-<LuGoal/>
+<nav className="talento-player-tabs">
 
-<h2>
 
-{player.stats?.goals || 0}
+{
 
-</h2>
+["Përmbledhje","Statistikat","Media"].map(tab=>(
 
-<span>Gola</span>
+
+<button
+
+key={tab}
+
+className={activeTab===tab ? "is-active":""}
+
+onClick={()=>setActiveTab(tab)}
+
+>
+
+{tab}
+
+</button>
+
+
+))
+
+}
+
+
+</nav>
+
+
+
+
+
+{
+
+activeTab==="Përmbledhje" &&
+
+
+<>
+
+
+<section className="talento-player-about">
+
+
+<div>
+
+<h2>Rreth lojtarit</h2>
+
+
+<p>
+
+{profile.bio || "Nuk ka përshkrim akoma."}
+
+</p>
+
+
+</div>
+
+
+
+<div className={`talento-player-pitch talento-player-pitch--${pitchZone}`}>
+
+<span/>
+
+</div>
+
+
+
+</section>
+
+
+
+
+<section className="talento-player-statistics">
+
+
+<div className="talento-player-section-heading">
+
+<h2>Statistikat</h2>
+
+<span>{stats.season || "Sezoni aktual"}</span>
 
 </div>
 
 
 
 
+<div className="talento-player-stat-grid">
 
 
+{
 
-<div className="stat-card">
+statItems.map(([key,label])=>(
 
-<LuBadgePlus/>
 
-<h2>
+<div key={key}>
 
-{player.stats?.assists || 0}
 
-</h2>
+<span>{label}</span>
 
-<span>Asiste</span>
+
+<strong>{stats[key] || 0}</strong>
+
+
+</div>
+
+
+))
+
+
+}
+
 
 </div>
 
 
 
+</section>
+
+
+</>
+
+
+}
 
 
 
 
-<div className="stat-card">
+{
+
+
+activeTab==="Statistikat" &&
+
+
+<section className="talento-player-tab-dashboard">
+
+
+<div className="talento-player-detailed-stat-grid">
+
+
+{
+
+
+detailedStatItems.map(([key,label])=>(
+
+
+<div key={key}>
+
+
+<span>{label}</span>
+
+
+<strong>{stats[key] || 0}</strong>
+
+
+</div>
+
+
+))
+
+
+}
+
+
+</div>
+
+
+</section>
+
+
+}
+
+
+
+
+
+{
+
+
+activeTab==="Media" &&
+
+
+<section className="talento-player-tab-dashboard">
+
+
+<h2>Highlights</h2>
+
+
+{
+
+profile.videoURL ?
+
+
+<video
+
+src={profile.videoURL}
+
+controls
+
+className="talento-player-video"
+
+/>
+
+
+:
+
+
+<div className="talento-player-empty-video">
 
 <LuPlay/>
 
-<h2>
-
-{player.stats?.minutes || 0}
-
-</h2>
-
-<span>Minuta</span>
+<span>Nuk ka video</span>
 
 </div>
 
 
+}
 
 
-</div>
+</section>
 
 
-
-
-
-
-
-
-
-<div className="highlights">
-
-
-<h2>
-
-Video Highlights
-
-</h2>
-
-
-
-<div className="video-placeholder">
-
-Video do të vendosen këtu
-
-</div>
-
-
-</div>
+}
 
 
 
 
 </section>
+
+
+</main>
 
 
 )
@@ -292,4 +503,4 @@ Video do të vendosen këtu
 }
 
 
-export default Player_Profile_Card;
+export default Player_Profile;

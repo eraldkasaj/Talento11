@@ -2,7 +2,6 @@ import "./Player_Card.css";
 import { Link } from "react-router-dom";
 
 
-
 function PlayerCard({player}){
 
 
@@ -11,31 +10,25 @@ return(
 <div className="player-card">
 
 
-
 {
 
 player.profile?.photoURL ?
 
-
-<img 
+<img
 src={player.profile.photoURL}
 className="player-image"
+alt={`${player.name} ${player.surname}`}
 />
-
 
 :
 
-
-<div className="player-image">
+<div className="player-image-placeholder">
 
 FOTO
 
 </div>
 
-
 }
-
-
 
 
 <div className="player-info">
@@ -48,33 +41,45 @@ FOTO
 </h3>
 
 
-
 <span className="player-position">
 
-{player.profile?.position}
+{player.profile?.position || "Pozicion"}
 
 </span>
 
 
+<p className="player-club">
 
-<p>
-
-{player.profile?.age} vjeç
+🏟 {player.profile?.club || "Pa klub"}
 
 </p>
 
 
+<p className="player-details">
+
+{player.profile?.age || "-"} vjeç · 🇦🇱 {player.profile?.nationality || "-"}
+
+</p>
 
 
 <div className="player-stats">
 
-<span>🎥 0</span>
 
-<span>👁 0</span>
+<span>
+
+⚽ {player.stats?.goals || 0} gola
+
+</span>
+
+
+<span>
+
+🎯 {player.stats?.assists || 0} asist
+
+</span>
+
 
 </div>
-
-
 
 
 <Link
@@ -87,7 +92,6 @@ Shiko Profilin
 </Link>
 
 
-
 </div>
 
 
@@ -97,7 +101,6 @@ Shiko Profilin
 
 
 }
-
 
 
 export default PlayerCard;
