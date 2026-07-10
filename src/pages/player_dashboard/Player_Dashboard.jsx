@@ -10,6 +10,7 @@ import {
   LuMapPin,
   LuPencil,
   LuPlay,
+  LuSettings,
   LuShield,
 } from "react-icons/lu";
 
@@ -76,6 +77,9 @@ function Player_Dashboard() {
     <main className="talento-player-dashboard">
       <section className="talento-player-panel">
         <div className="talento-player-actions">
+          <button type="button" onClick={() => navigate("/player-settings")}>
+            <LuSettings /> Cilësimet
+          </button>
           <button type="button" onClick={() => navigate("/edit-profile")}>
             <LuPencil /> Edito profilin
           </button>
