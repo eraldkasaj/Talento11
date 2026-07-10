@@ -17,6 +17,7 @@ import Highlights from "./pages/highlights/Highlights";
 import Messages from "./pages/messages/Messages";
 import Visits from "./pages/visits/Visits";
 import Settings from "./pages/settings/Settings";
+import Player_Settings from "./pages/player_settings/Player_Settings";
 import {Routes ,Route} from 'react-router-dom'
 
 
@@ -42,6 +43,7 @@ function App() {
     <Route path="/messages" element={<Messages />} />
     <Route path="/visits" element={<Visits />} />
     <Route path="/settings" element={<Settings />} />
+    <Route path="/player-settings" element={<Player_Settings />} />
    </Routes>
       
     

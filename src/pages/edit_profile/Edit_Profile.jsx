@@ -16,8 +16,11 @@ const navigate = useNavigate();
 
 
 const [club,setClub] = useState("");
+const [league,setLeague] = useState("");
 const [position,setPosition] = useState("");
+const [bio,setBio] = useState("");
 const [height,setHeight] = useState("");
+const [weight,setWeight] = useState("");
 const [age,setAge] = useState("");
 const [nationality,setNationality] = useState("");
 const [dominantFoot,setDominantFoot] = useState("");
@@ -55,9 +58,15 @@ const data = snapshot.val();
 
 setClub(data.club || "");
 
+setLeague(data.league || "");
+
 setPosition(data.position || "");
 
+setBio(data.bio || "");
+
 setHeight(data.height || "");
+
+setWeight(data.weight || "");
 
 setAge(data.age || "");
 
@@ -265,9 +274,15 @@ ref(db,"users/" + user.uid + "/profile"),
 
 club,
 
+league,
+
 position,
 
+bio,
+
 height,
+
+weight,
 
 age,
 
@@ -516,6 +531,56 @@ onChange={(e)=>setPosition(e.target.value)}
 
 
 
+<div className="form-group">
+
+<label>Liga / Kampionati</label>
+
+
+<input
+
+type="text"
+
+placeholder="p.sh. Superliga Shqiptare U-19"
+
+value={league}
+
+onChange={(e)=>setLeague(e.target.value)}
+
+/>
+
+</div>
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Përshkrimi</label>
+
+
+<textarea
+
+value={bio}
+
+onChange={(e)=>setBio(e.target.value)}
+
+placeholder="Shkruaj shkurt për stilin tënd të lojës dhe objektivat e tua..."
+
+rows="4"
+
+/>
+
+</div>
+
+
+
+
+
+
+
 
 
 <div className="form-group">
@@ -525,11 +590,42 @@ onChange={(e)=>setPosition(e.target.value)}
 
 <input
 
-type="text"
+type="number"
+
+min="0"
+
+placeholder="cm"
 
 value={height}
 
 onChange={(e)=>setHeight(e.target.value)}
+
+/>
+
+</div>
+
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Pesha</label>
+
+
+<input
+
+type="number"
+
+min="0"
+
+placeholder="kg"
+
+value={weight}
+
+onChange={(e)=>setWeight(e.target.value)}
 
 />
 
