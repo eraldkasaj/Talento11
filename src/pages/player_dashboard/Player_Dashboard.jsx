@@ -24,14 +24,111 @@ const statItems = [
 
 const detailedStatItems = [...statItems, ["minutes", "Minuta të luajtura"]];
 
-const getPitchZone = (position) => {
+// Every individual position the pitch can highlight. Keys are the canonical
+// codes used both by the CSS classes (lowercased) and by getPositionName.
+const PITCH_POSITIONS = [
+  "GK",
+  "CB",
+  "LB",
+  "RB",
+  "LWB",
+  "RWB",
+  "CDM",
+  "CM",
+  "CAM",
+  "LM",
+  "RM",
+  "LW",
+  "RW",
+  "CF",
+  "ST",
+];
+
+// Aliases so odd/legacy values stored in Firebase (or synonyms like "DF",
+// "MID", "GOALKEEPER") still resolve to one of the exact codes above instead
+// of falling back to a generic zone. Add more aliases here as needed — the
+// pitch and getPositionName both read from the same PITCH_POSITIONS list, so
+// nothing else needs to change.
+const POSITION_ALIASES = {
+  GOALKEEPER: "GK",
+  PORTIER: "GK",
+  DF: "CB",
+  DEF: "CB",
+  DEFENDER: "CB",
+  DM: "CDM",
+  MID: "CM",
+  MIDFIELDER: "CM",
+  AM: "CAM",
+  FW: "ST",
+  FORWARD: "ST",
+  STRIKER: "ST",
+};
+
+// Resolves any stored position value to one of the exact codes in
+// PITCH_POSITIONS (GK, LB, CB, RB, LWB, RWB, CDM, CM, CAM, LM, RM, LW, RW,
+// CF, ST). Falls back to "ST" only when the value is missing or unrecognized.
+const getPitchPosition = (position) => {
   const normalizedPosition = position?.trim().toUpperCase();
 
-  if (["GK", "GOALKEEPER", "PORTIER"].includes(normalizedPosition)) return "goalkeeper";
-  if (["CB", "LB", "RB", "LWB", "RWB", "DF", "DEF"].includes(normalizedPosition)) return "defender";
-  if (["CM", "CDM", "CAM", "LM", "RM", "DM", "AM", "MID"].includes(normalizedPosition)) return "midfielder";
+  if (!normalizedPosition) return "ST";
 
-  return "forward";
+  if (PITCH_POSITIONS.includes(normalizedPosition)) return normalizedPosition;
+
+  return POSITION_ALIASES[normalizedPosition] || "ST";
+};
+
+const getPositionName = (position) => {
+
+  switch(position){
+
+    case "GK":
+      return "Portier";
+
+    case "CB":
+      return "Qendër Mbrojtës";
+
+    case "LB":
+      return "Mbrojtës i Majtë";
+
+    case "RB":
+      return "Mbrojtës i Djathtë";
+
+    case "LWB":
+      return "Mbrojtës Krahu i Majtë";
+
+    case "RWB":
+      return "Mbrojtës Krahu i Djathtë";
+
+    case "CDM":
+      return "Mesfushor Defensiv";
+
+    case "CM":
+      return "Mesfushor Qendre";
+
+    case "CAM":
+      return "Mesfushor Ofensiv";
+
+    case "LM":
+      return "Mesfushor i Majtë";
+
+    case "RM":
+      return "Mesfushor i Djathtë";
+
+    case "LW":
+      return "Sulmues Krahu i Majtë";
+
+    case "RW":
+      return "Sulmues Krahu i Djathtë";
+
+    case "CF":
+      return "Qendër Sulmues";
+
+    case "ST":
+      return "Sulmues";
+
+    default:
+      return "—";
+  }
 };
 
 function Player_Dashboard() {
@@ -68,7 +165,7 @@ function Player_Dashboard() {
   const fullName = [userData?.name, userData?.surname].filter(Boolean).join(" ") || "Profili im";
   const club = profile.club || "Klubi nuk është vendosur";
   const league = profile.league || "Superliga Shqiptare U-19";
-  const pitchZone = getPitchZone(profile.position);
+  const pitchPosition = getPitchPosition(profile.position);
   const joinedAt = userData?.createdAt
     ? new Intl.DateTimeFormat("sq-AL", { month: "long", year: "numeric" }).format(new Date(userData.createdAt))
     : "—";
@@ -116,7 +213,7 @@ function Player_Dashboard() {
                 <span>Lartësia</span>
               </div>
               <div>
-                <strong>{profile.position || "—"}</strong>
+                <strong>{getPositionName(profile.position)}</strong>
                 <span>Pozicioni</span>
               </div>
               <div>
@@ -124,7 +221,7 @@ function Player_Dashboard() {
                 <span>Kombësia</span>
               </div>
               <div>
-                <strong><LuFootprints /> {profile.dominantFoot || "—"}</strong>
+               <strong><LuFootprints />{profile.dominantFoot === "Right" ? "E djathtë" : profile.dominantFoot === "Left"? "E majtë": profile.dominantFoot === "Both"? "Të dyja"   : "—"}</strong>
                 <span>Këmba e preferuar</span>
               </div>
               <div>
@@ -157,7 +254,7 @@ function Player_Dashboard() {
                   {profile.bio || "Lojtar i përkushtuar që punon çdo ditë për të përmirësuar aftësitë e tij. I gatshëm të tregojë talentin e tij para scout-ëve dhe klubeve."}
                 </p>
               </div>
-              <div className={`talento-player-pitch talento-player-pitch--${pitchZone}`} aria-hidden="true">
+              <div className={`talento-player-pitch talento-player-pitch--${pitchPosition.toLowerCase()}`} aria-hidden="true">
                 <div className="talento-player-pitch-center" />
                 <div className="talento-player-pitch-box talento-player-pitch-box-left" />
                 <div className="talento-player-pitch-box talento-player-pitch-box-right" />
@@ -234,7 +331,7 @@ function Player_Dashboard() {
             <div className="talento-player-section-heading"><h2>Karriera</h2></div>
             <div className="talento-player-career-entry">
               <div className="talento-player-club-mark"><LuShield /></div>
-              <div><span>Klubi aktual</span><h3>{club}</h3><p>🇦🇱 {league} · {profile.position || "Pozicioni nuk është vendosur"}</p></div>
+              <div><span>Klubi aktual</span><h3>{club}</h3><p>🇦🇱 {league} · {getPositionName(profile.position)}</p></div>
               <time>{joinedAt}</time>
             </div>
           </section>

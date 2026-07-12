@@ -30,21 +30,128 @@ const statItems=[
 const detailedStatItems=[...statItems,["minutes","Minuta të luajtura"]];
 
 
-const getPitchZone=(position)=>{
+// Every individual position the pitch can highlight. Keys are the canonical
+// codes used both by the CSS classes (lowercased) and by getPositionName.
+// Kept identical to Player_Dashboard.jsx so both pages stay in sync.
+const PITCH_POSITIONS=[
+
+"GK",
+"CB",
+"LB",
+"RB",
+"LWB",
+"RWB",
+"CDM",
+"CM",
+"CAM",
+"LM",
+"RM",
+"LW",
+"RW",
+"CF",
+"ST",
+
+];
 
 
-const pos=position?.trim().toUpperCase();
+// Aliases so odd/legacy values stored in Firebase (or synonyms like "DF",
+// "MID", "GOALKEEPER") still resolve to one of the exact codes above instead
+// of falling back to a generic zone.
+const POSITION_ALIASES={
+
+GOALKEEPER:"GK",
+PORTIER:"GK",
+DF:"CB",
+DEF:"CB",
+DEFENDER:"CB",
+DM:"CDM",
+MID:"CM",
+MIDFIELDER:"CM",
+AM:"CAM",
+FW:"ST",
+FORWARD:"ST",
+STRIKER:"ST",
+
+};
 
 
-if(["GK","GOALKEEPER","PORTIER"].includes(pos)) return "goalkeeper";
+// Resolves any stored position value to one of the exact codes in
+// PITCH_POSITIONS (GK, LB, CB, RB, LWB, RWB, CDM, CM, CAM, LM, RM, LW, RW,
+// CF, ST). Falls back to "ST" only when the value is missing or unrecognized.
+const getPitchPosition=(position)=>{
 
-if(["CB","LB","RB","DEF"].includes(pos)) return "defender";
 
-if(["CM","CDM","CAM","MID"].includes(pos)) return "midfielder";
+const normalizedPosition=position?.trim().toUpperCase();
 
 
-return "forward";
+if(!normalizedPosition) return "ST";
 
+
+if(PITCH_POSITIONS.includes(normalizedPosition)) return normalizedPosition;
+
+
+return POSITION_ALIASES[normalizedPosition] || "ST";
+
+
+}
+
+
+const getPositionName=(position)=>{
+
+const normalizedPosition=position?.trim().toUpperCase();
+
+
+switch(normalizedPosition){
+
+case "GK":
+return "Portier";
+
+case "CB":
+return "Qendër Mbrojtës";
+
+case "LB":
+return "Mbrojtës i Majtë";
+
+case "RB":
+return "Mbrojtës i Djathtë";
+
+case "LWB":
+return "Mbrojtës Krahu i Majtë";
+
+case "RWB":
+return "Mbrojtës Krahu i Djathtë";
+
+case "CDM":
+return "Mesfushor Defensiv";
+
+case "CM":
+return "Mesfushor Qendre";
+
+case "CAM":
+return "Mesfushor Ofensiv";
+
+case "LM":
+return "Mesfushor i Majtë";
+
+case "RM":
+return "Mesfushor i Djathtë";
+
+case "LW":
+return "Sulmues Krahu i Majtë";
+
+case "RW":
+return "Sulmues Krahu i Djathtë";
+
+case "CF":
+return "Qendër Sulmues";
+
+case "ST":
+return "Sulmues";
+
+default:
+return "—";
+
+}
 
 }
 
@@ -111,7 +218,7 @@ const club=profile.club || "Klubi nuk është vendosur";
 const league=profile.league || "Superliga Shqiptare U-19";
 
 
-const pitchZone=getPitchZone(profile.position);
+const pitchPosition=getPitchPosition(profile.position);
 
 
 return(
@@ -211,7 +318,7 @@ Verified
 
 <div>
 
-<strong>{profile.position || "—"}</strong>
+<strong>{getPositionName(profile.position)}</strong>
 
 <span>Pozicioni</span>
 
@@ -324,7 +431,7 @@ activeTab==="Përmbledhje" &&
 
 
 
-<div className={`talento-player-pitch talento-player-pitch--${pitchZone}`}>
+<div className={`talento-player-pitch talento-player-pitch--${pitchPosition.toLowerCase()}`}>
 
 <span/>
 

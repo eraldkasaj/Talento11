@@ -236,6 +236,7 @@
 .talento-player-pitch > span {
   position: absolute;
   top: 50%;
+  left: 50%;
   width: 14px;
   height: 14px;
   transform: translate(-50%, -50%);
@@ -244,10 +245,44 @@
   box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.16);
 }
 
-.talento-player-pitch--goalkeeper > span { left: 9%; }
-.talento-player-pitch--defender > span { left: 27%; }
-.talento-player-pitch--midfielder > span { left: 50%; }
-.talento-player-pitch--forward > span { left: 88%; }
+/* ---------------------------------------------------------------------
+   Per-position dot placement.
+
+   Coordinates are % of the pitch box (left = depth toward goal→attack,
+   top = width across the pitch). Each rule only needs to override what
+   differs from the default (top:50%, left:50%) above, so central roles
+   (GK, CB, CDM, CM, CAM, CF, ST) set only `left`, while wide roles
+   (LB/RB, LWB/RWB, LM/RM, LW/RW) set both `left` and `top`.
+
+   To add a new position later: add its code to PITCH_POSITIONS and
+   getPositionName in Player_Dashboard.jsx, then add one rule here.
+--------------------------------------------------------------------- */
+
+.talento-player-pitch--gk > span { left: 8%; }
+
+.talento-player-pitch--cb > span { left: 20%; }
+
+.talento-player-pitch--lb > span { left: 24%; top: 14%; }
+.talento-player-pitch--rb > span { left: 24%; top: 86%; }
+
+.talento-player-pitch--lwb > span { left: 34%; top: 12%; }
+.talento-player-pitch--rwb > span { left: 34%; top: 88%; }
+
+.talento-player-pitch--cdm > span { left: 40%; }
+
+.talento-player-pitch--cm > span { left: 50%; }
+
+.talento-player-pitch--lm > span { left: 55%; top: 20%; }
+.talento-player-pitch--rm > span { left: 55%; top: 80%; }
+
+.talento-player-pitch--cam > span { left: 62%; }
+
+.talento-player-pitch--lw > span { left: 78%; top: 15%; }
+.talento-player-pitch--rw > span { left: 78%; top: 85%; }
+
+.talento-player-pitch--cf > span { left: 82%; }
+
+.talento-player-pitch--st > span { left: 90%; }
 
 .talento-player-statistics,
 .talento-player-club-card {
