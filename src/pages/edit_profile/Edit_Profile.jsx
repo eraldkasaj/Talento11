@@ -512,16 +512,41 @@ onChange={(e)=>setClub(e.target.value)}
 
 <label>Pozicioni</label>
 
-
-<input
-
-type="text"
-
+<select
 value={position}
-
 onChange={(e)=>setPosition(e.target.value)}
+>
 
-/>
+<option value="">Zgjidh pozicionin</option>
+
+<optgroup label="Portier">
+<option value="GK">Portier (GK)</option>
+</optgroup>
+
+<optgroup label="Mbrojtës">
+<option value="CB">Qendër Mbrojtës (CB)</option>
+<option value="LB">Mbrojtës i Majtë (LB)</option>
+<option value="RB">Mbrojtës i Djathtë (RB)</option>
+<option value="LWB">Wing Back i Majtë (LWB)</option>
+<option value="RWB">Wing Back i Djathtë (RWB)</option>
+</optgroup>
+
+<optgroup label="Mesfushor">
+<option value="CDM">Mesfushor Defensiv (CDM)</option>
+<option value="CM">Mesfushor Qendre (CM)</option>
+<option value="CAM">Mesfushor Ofensiv (CAM)</option>
+<option value="LM">Mesfushor i Majtë (LM)</option>
+<option value="RM">Mesfushor i Djathtë (RM)</option>
+</optgroup>
+
+<optgroup label="Sulmues">
+<option value="LW">Sulmues Krahu i Majtë (LW)</option>
+<option value="RW">Sulmues Krahu i Djathtë (RW)</option>
+<option value="CF">Qendër Sulmues (CF)</option>
+<option value="ST">Sulmues (ST)</option>
+</optgroup>
+
+</select>
 
 </div>
 
