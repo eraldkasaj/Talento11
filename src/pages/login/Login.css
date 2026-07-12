@@ -127,3 +127,57 @@
 
     font-weight:700;
 }
+
+.forgot-password{
+display:flex;
+justify-content:flex-end;
+margin-top:-8px;
+margin-bottom:20px;
+}
+
+.forgot-password a{
+color:var(--brand-teal);
+text-decoration:none;
+font-size:.95rem;
+font-weight:600;
+}
+
+.forgot-password a:hover{
+text-decoration:underline;
+}
+
+.login-error{
+
+background:#3b0d13;
+border:1px solid #ef4444;
+color:#fecaca;
+
+padding:14px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+text-align:center;
+
+font-weight:600;
+
+}
+
+.login-success{
+
+background:#052e16;
+border:1px solid #22c55e;
+color:#bbf7d0;
+
+padding:14px;
+
+border-radius:12px;
+
+margin-bottom:20px;
+
+text-align:center;
+
+font-weight:600;
+
+}
