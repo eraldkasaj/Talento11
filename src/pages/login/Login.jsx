@@ -10,11 +10,15 @@ function Login() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error,setError] = useState("");
+
 
   const navigate = useNavigate();
 
 
   const handleLogin = async (e) => {
+
+    setError("");
 
     e.preventDefault();
 
@@ -54,11 +58,39 @@ function Login() {
 
       }
 
-    } catch (error) {
+    } catch(error){
 
-      console.log(error.message);
+if(error.code==="auth/invalid-email"){
 
-    }
+setError("Email i pavlefshëm.");
+
+}
+
+else if(error.code==="auth/invalid-credential"){
+
+setError("Email ose password i gabuar.");
+
+}
+
+else if(error.code==="auth/user-disabled"){
+
+setError("Kjo llogari është çaktivizuar.");
+
+}
+
+else if(error.code==="auth/too-many-requests"){
+
+setError("Shumë tentativa. Provo përsëri pas pak minutash.");
+
+}
+
+else{
+
+setError("Ndodhi një gabim. Provo përsëri.");
+
+}
+
+}
 
   };
 
@@ -82,6 +114,17 @@ function Login() {
           Mirë se u ktheve në Talento11.
         </p>
 
+           {error && (
+
+          <p className="login-error">
+
+          {error}
+
+          </p>
+
+          )}
+
+         
 
         <form 
           className="login-form"
@@ -92,16 +135,27 @@ function Login() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e)=>setEmail(e.target.value)}
-          />
+            onChange={(e)=>{setEmail(e.target.value);setError("");}}
+            autoComplete="email"
+            />
 
-
-          <input
+            <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e)=>setPassword(e.target.value)}
-          />
+            onChange={(e)=>{setPassword(e.target.value);setError("");}}
+            autoComplete="current-password"
+            />
+
+          <div className="forgot-password">
+
+          <Link to="/forgot-password">
+
+          Keni harruar password-in?
+
+          </Link>
+
+          </div>
 
 
           <button type="submit">
