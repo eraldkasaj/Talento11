@@ -5,6 +5,7 @@ import { useState } from "react";
 import { auth, db } from "../../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { ref, get } from "firebase/database";
+import { LuArrowLeft } from "react-icons/lu";
 
 function Login() {
 
@@ -99,13 +100,19 @@ setError("Ndodhi një gabim. Provo përsëri.");
 
     <section className="login">
 
+      <Link to="/" className="login-back">
+        <LuArrowLeft /> Kthehu në faqen kryesore
+      </Link>
+
       <div className="login-card">
 
-        <img
-          src={logo_img}
-          alt="Talento11"
-          className="login-logo"
-        />
+        <Link to="/">
+          <img
+            src={logo_img}
+            alt="Talento11"
+            className="login-logo"
+          />
+        </Link>
 
 
         <h1>Hyr</h1>

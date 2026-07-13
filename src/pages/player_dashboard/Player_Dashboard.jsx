@@ -1,7 +1,7 @@
 import "./Player_Dashboard.css";
 import { useEffect, useState } from "react";
 import { auth, db } from "../../firebase/firebase";
-import { ref, get } from "firebase/database";
+import { ref, get, push, set, remove } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import {
@@ -10,8 +10,11 @@ import {
   LuMapPin,
   LuPencil,
   LuPlay,
+  LuPlus,
   LuSettings,
   LuShield,
+  LuTrash2,
+  LuX,
 } from "react-icons/lu";
 
 const statItems = [
@@ -23,6 +26,33 @@ const statItems = [
 ];
 
 const detailedStatItems = [...statItems, ["minutes", "Minuta të luajtura"]];
+
+// Official Albanian league/competition tiers (FSHF), used as the fixed set of
+// choices for the "Kampionati" field so players pick from a real list
+// instead of typing free text.
+const LEAGUE_OPTIONS = [
+  "Abissnet Superiore",
+  "Abissnet Superiore U-21",
+  "U-19 Abissnet Superiore",
+  "U-17 Abissnet Superiore",
+  "U-16 Abissnet Superiore",
+  "U-15 Abissnet Superiore",
+  "U-14 Abissnet Superiore",
+  "U-13 Abissnet Superiore",
+  "Superiore Vajza",
+  "Kategoria e Parë",
+  "Kategoria e Parë U-19",
+  "Kategoria e Parë U-17",
+  "Kategoria e Parë U-15",
+  "Kategoria e Parë U-14",
+  "Kategoria e Parë U-13",
+  "Kategoria e Dytë A",
+  "Kategoria e Dytë B",
+  "Kategoria e Tretë",
+  "Fustal League",
+  "5x5",
+  "Kupa e Shqipërisë",
+];
 
 // Every individual position the pitch can highlight. Keys are the canonical
 // codes used both by the CSS classes (lowercased) and by getPositionName.
@@ -79,62 +109,43 @@ const getPitchPosition = (position) => {
 
 const getPositionName = (position) => {
 
-  switch(position){
+  const normalizedPosition = position?.trim().toUpperCase();
 
-    case "GK":
-      return "Portier";
+  const names = {
+    GK: "Portier",
+    CB: "Qendër Mbrojtës",
+    LB: "Mbrojtës i Majtë",
+    RB: "Mbrojtës i Djathtë",
+    LWB: "Wing Back i Majtë",
+    RWB: "Wing Back i Djathtë",
+    CDM: "Mesfushor Defensiv",
+    CM: "Mesfushor Qendre",
+    CAM: "Mesfushor Ofensiv",
+    LM: "Mesfushor i Majtë",
+    RM: "Mesfushor i Djathtë",
+    LW: "Sulmues Krahu i Majtë",
+    RW: "Sulmues Krahu i Djathtë",
+    CF: "Qendër Sulmues",
+    ST: "Sulmues",
+  };
 
-    case "CB":
-      return "Qendër Mbrojtës";
+  const name = names[normalizedPosition];
 
-    case "LB":
-      return "Mbrojtës i Majtë";
+  if (!name) return "—";
 
-    case "RB":
-      return "Mbrojtës i Djathtë";
+  return `${name} (${normalizedPosition})`;
 
-    case "LWB":
-      return "Mbrojtës Krahu i Majtë";
-
-    case "RWB":
-      return "Mbrojtës Krahu i Djathtë";
-
-    case "CDM":
-      return "Mesfushor Defensiv";
-
-    case "CM":
-      return "Mesfushor Qendre";
-
-    case "CAM":
-      return "Mesfushor Ofensiv";
-
-    case "LM":
-      return "Mesfushor i Majtë";
-
-    case "RM":
-      return "Mesfushor i Djathtë";
-
-    case "LW":
-      return "Sulmues Krahu i Majtë";
-
-    case "RW":
-      return "Sulmues Krahu i Djathtë";
-
-    case "CF":
-      return "Qendër Sulmues";
-
-    case "ST":
-      return "Sulmues";
-
-    default:
-      return "—";
-  }
 };
 
 function Player_Dashboard() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
   const [activeTab, setActiveTab] = useState("Përmbledhje");
+
+  const [showCareerModal, setShowCareerModal] = useState(false);
+  const [careerForm, setCareerForm] = useState({ club: "", league: "", startYear: "", endYear: "" });
+  const [careerError, setCareerError] = useState("");
+  const [savingCareer, setSavingCareer] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -160,15 +171,110 @@ function Player_Dashboard() {
     navigate("/login");
   };
 
+  const openCareerModal = () => {
+    setCareerForm({ club: "", league: "", startYear: "", endYear: "" });
+    setCareerError("");
+    setShowCareerModal(true);
+  };
+
+  const closeCareerModal = () => {
+    setShowCareerModal(false);
+    setCareerError("");
+  };
+
+  const addCareerEntry = async (event) => {
+    event.preventDefault();
+
+    const user = auth.currentUser;
+
+    if (!user) return;
+
+    const club = careerForm.club.trim();
+    const league = careerForm.league.trim();
+    const startYear = careerForm.startYear.trim();
+    const endYear = careerForm.endYear.trim();
+
+    if (!club || !startYear) {
+      setCareerError("Plotëso të paktën klubin dhe vitin e fillimit.");
+      return;
+    }
+
+    setSavingCareer(true);
+    setCareerError("");
+
+    try {
+      const careerRef = ref(db, `users/${user.uid}/career`);
+      const newEntryRef = push(careerRef);
+
+      const entry = {
+        club,
+        league: league || null,
+        startYear,
+        endYear: endYear || null,
+        createdAt: Date.now(),
+      };
+
+      await set(newEntryRef, entry);
+
+      setUserData((previous) => ({
+        ...previous,
+        career: { ...(previous?.career || {}), [newEntryRef.key]: entry },
+      }));
+
+      setShowCareerModal(false);
+    } catch (saveError) {
+      setCareerError(saveError.message || "Klubi nuk u shtua dot.");
+    } finally {
+      setSavingCareer(false);
+    }
+  };
+
+  const deleteCareerEntry = async (entryId) => {
+    const user = auth.currentUser;
+
+    if (!user) return;
+
+    if (!window.confirm("Ta heq këtë klub nga karriera jote?")) return;
+
+    try {
+      await remove(ref(db, `users/${user.uid}/career/${entryId}`));
+
+      setUserData((previous) => {
+        const nextCareer = { ...(previous?.career || {}) };
+        delete nextCareer[entryId];
+        return { ...previous, career: nextCareer };
+      });
+    } catch {
+      // Silently ignore — the entry simply stays visible if the delete failed.
+    }
+  };
+
   const profile = userData?.profile ?? {};
   const stats = userData?.stats ?? {};
   const fullName = [userData?.name, userData?.surname].filter(Boolean).join(" ") || "Profili im";
-  const club = profile.club || "Klubi nuk është vendosur";
-  const league = profile.league || "Superliga Shqiptare U-19";
   const pitchPosition = getPitchPosition(profile.position);
-  const joinedAt = userData?.createdAt
-    ? new Intl.DateTimeFormat("sq-AL", { month: "long", year: "numeric" }).format(new Date(userData.createdAt))
-    : "—";
+
+  const careerEntries = Object.entries(userData?.career || {})
+    .map(([id, entry]) => ({ id, ...entry }))
+    .sort((a, b) => (Number(b.startYear) || 0) - (Number(a.startYear) || 0));
+
+  // The "current" club/league now come from the career entry the player
+  // marked as ongoing (no endYear) — added once, from the Karriera tab —
+  // instead of a separate Klubi/Liga field in Edit Profile. This keeps club
+  // info editable from a single place. Older accounts that only have the
+  // legacy profile.club/profile.league (no career entries yet) still work
+  // via the fallback below.
+  const currentCareerEntry = careerEntries.find((entry) => !entry.endYear);
+  const club = currentCareerEntry?.club || profile.club || "Klubi nuk është vendosur";
+  const league = currentCareerEntry?.league || profile.league || "Superliga Shqiptare U-19";
+
+  const videoEntries = userData?.videos
+    ? Object.entries(userData.videos)
+        .map(([id, video]) => ({ id, ...video }))
+        .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+    : profile.videoURL
+    ? [{ id: "legacy", url: profile.videoURL }]
+    : [];
 
   return (
     <main className="talento-player-dashboard">
@@ -288,8 +394,14 @@ function Player_Dashboard() {
 
             <section className="talento-player-highlights">
               <div className="talento-player-section-heading"><h2>Highlights</h2></div>
-              {profile.videoURL ? (
-                <div className="talento-player-video-wrap"><video src={profile.videoURL} controls className="talento-player-video" /></div>
+              {videoEntries.length > 0 ? (
+                <div className="talento-player-video-grid">
+                  {videoEntries.map((video) => (
+                    <div className="talento-player-video-wrap" key={video.id}>
+                      <video src={video.url} controls className="talento-player-video" />
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <button type="button" className="talento-player-empty-video" onClick={() => navigate("/edit-profile")}>
                   <LuPlay /><span>Ngarko highlight-in tënd të parë</span>
@@ -316,8 +428,14 @@ function Player_Dashboard() {
         {activeTab === "Media" && (
           <section className="talento-player-tab-dashboard">
             <div className="talento-player-section-heading"><h2>Video Highlights</h2></div>
-            {profile.videoURL ? (
-              <div className="talento-player-video-wrap"><video src={profile.videoURL} controls className="talento-player-video" /></div>
+            {videoEntries.length > 0 ? (
+              <div className="talento-player-video-grid">
+                {videoEntries.map((video) => (
+                  <div className="talento-player-video-wrap" key={video.id}>
+                    <video src={video.url} controls className="talento-player-video" />
+                  </div>
+                ))}
+              </div>
             ) : (
               <button type="button" className="talento-player-empty-video" onClick={() => navigate("/edit-profile")}>
                 <LuPlay /><span>Nuk ka video akoma. Kliko për të ngarkuar videon.</span>
@@ -328,13 +446,111 @@ function Player_Dashboard() {
 
         {activeTab === "Karriera" && (
           <section className="talento-player-tab-dashboard">
-            <div className="talento-player-section-heading"><h2>Karriera</h2></div>
-            <div className="talento-player-career-entry">
-              <div className="talento-player-club-mark"><LuShield /></div>
-              <div><span>Klubi aktual</span><h3>{club}</h3><p>🇦🇱 {league} · {getPositionName(profile.position)}</p></div>
-              <time>{joinedAt}</time>
+            <div className="talento-player-section-heading">
+              <h2>Karriera</h2>
+              <button type="button" onClick={openCareerModal}>
+                <LuPlus /> Shto klub
+              </button>
             </div>
+
+            {careerEntries.length === 0 ? (
+              <p className="talento-player-career-empty">
+                Ende s'ke shtuar klube te karriera jote. Shto klubet ku ke luajtur (duke përfshirë klubin aktual) që të kesh një historik të plotë para scout-ëve.
+              </p>
+            ) : (
+              careerEntries.map((entry) => (
+                <div className="talento-player-career-entry" key={entry.id}>
+                  <div className="talento-player-club-mark"><LuShield /></div>
+                  <div>
+                    <span>{entry.endYear ? "Ish klub" : "Klubi aktual"}</span>
+                    <h3>{entry.club}</h3>
+                    <p>{entry.league ? `🇦🇱 ${entry.league}` : "Kampionati nuk është vendosur"}</p>
+                  </div>
+                  <time>{entry.startYear} – {entry.endYear || "Aktual"}</time>
+                  <button
+                    type="button"
+                    className="talento-player-career-delete"
+                    onClick={() => deleteCareerEntry(entry.id)}
+                    aria-label="Fshi këtë klub nga karriera"
+                  >
+                    <LuTrash2 />
+                  </button>
+                </div>
+              ))
+            )}
           </section>
+        )}
+
+        {showCareerModal && (
+          <div className="talento-career-modal-backdrop" onClick={closeCareerModal}>
+            <div className="talento-career-modal" onClick={(event) => event.stopPropagation()}>
+              <div className="talento-career-modal-header">
+                <h3>Shto klub te karriera</h3>
+                <button type="button" onClick={closeCareerModal} aria-label="Mbyll">
+                  <LuX />
+                </button>
+              </div>
+
+              {careerError && <p className="talento-player-message is-error">{careerError}</p>}
+
+              <form onSubmit={addCareerEntry} className="talento-career-form">
+                <label>
+                  Klubi
+                  <input
+                    value={careerForm.club}
+                    onChange={(event) => setCareerForm((previous) => ({ ...previous, club: event.target.value }))}
+                    placeholder="p.sh. Flamurtari FC"
+                  />
+                </label>
+
+                <label>
+                  Kampionati
+                  <select
+                    value={careerForm.league}
+                    onChange={(event) => setCareerForm((previous) => ({ ...previous, league: event.target.value }))}
+                  >
+                    <option value="">Zgjidh kampionatin</option>
+                    {LEAGUE_OPTIONS.map((leagueOption) => (
+                      <option key={leagueOption} value={leagueOption}>
+                        {leagueOption}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <div className="talento-career-form-row">
+                  <label>
+                    Nga (viti)
+                    <input
+                      value={careerForm.startYear}
+                      onChange={(event) => setCareerForm((previous) => ({ ...previous, startYear: event.target.value }))}
+                      placeholder="2022"
+                      inputMode="numeric"
+                    />
+                  </label>
+
+                  <label>
+                    Deri (viti)
+                    <input
+                      value={careerForm.endYear}
+                      onChange={(event) => setCareerForm((previous) => ({ ...previous, endYear: event.target.value }))}
+                      placeholder="Lëre bosh nëse je aktual"
+                      inputMode="numeric"
+                    />
+                  </label>
+                </div>
+
+                <div className="talento-career-form-actions">
+                  <button type="button" className="talento-career-form-cancel" onClick={closeCareerModal}>
+                    Anulo
+                  </button>
+                  <button type="submit" className="talento-career-form-submit" disabled={savingCareer}>
+                    {savingCareer ? "Duke ruajtur..." : "Shto klubin"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         )}
       </section>
     </main>
