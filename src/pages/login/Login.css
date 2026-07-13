@@ -3,10 +3,32 @@
     background:var(--bg-primary);
 
     display:flex;
+    flex-direction:column;
     justify-content:center;
     align-items:center;
 
     padding:40px;
+
+    position:relative;
+}
+
+.login-back{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    color:var(--text-secondary);
+    text-decoration:none;
+    font-size:0.9rem;
+    font-weight:600;
+
+    margin-bottom:24px;
+
+    transition:color .25s ease;
+}
+
+.login-back:hover{
+    color:var(--brand-teal);
 }
 
 .login-card{
@@ -29,6 +51,14 @@
     display:block;
 
     margin:0 auto 25px;
+
+    cursor:pointer;
+
+    transition:transform .25s ease;
+}
+
+.login-logo:hover{
+    transform:scale(1.04);
 }
 
 .login-card h1{

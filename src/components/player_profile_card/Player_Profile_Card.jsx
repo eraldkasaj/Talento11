@@ -100,58 +100,31 @@ const getPositionName=(position)=>{
 
 const normalizedPosition=position?.trim().toUpperCase();
 
+const names={
 
-switch(normalizedPosition){
+GK:"Portier",
+CB:"Qendër Mbrojtës",
+LB:"Mbrojtës i Majtë",
+RB:"Mbrojtës i Djathtë",
+LWB:"Wing Back i Majtë",
+RWB:"Wing Back i Djathtë",
+CDM:"Mesfushor Defensiv",
+CM:"Mesfushor Qendre",
+CAM:"Mesfushor Ofensiv",
+LM:"Mesfushor i Majtë",
+RM:"Mesfushor i Djathtë",
+LW:"Sulmues Krahu i Majtë",
+RW:"Sulmues Krahu i Djathtë",
+CF:"Qendër Sulmues",
+ST:"Sulmues",
 
-case "GK":
-return "Portier";
+};
 
-case "CB":
-return "Qendër Mbrojtës";
+const name=names[normalizedPosition];
 
-case "LB":
-return "Mbrojtës i Majtë";
+if(!name) return "—";
 
-case "RB":
-return "Mbrojtës i Djathtë";
-
-case "LWB":
-return "Mbrojtës Krahu i Majtë";
-
-case "RWB":
-return "Mbrojtës Krahu i Djathtë";
-
-case "CDM":
-return "Mesfushor Defensiv";
-
-case "CM":
-return "Mesfushor Qendre";
-
-case "CAM":
-return "Mesfushor Ofensiv";
-
-case "LM":
-return "Mesfushor i Majtë";
-
-case "RM":
-return "Mesfushor i Djathtë";
-
-case "LW":
-return "Sulmues Krahu i Majtë";
-
-case "RW":
-return "Sulmues Krahu i Djathtë";
-
-case "CF":
-return "Qendër Sulmues";
-
-case "ST":
-return "Sulmues";
-
-default:
-return "—";
-
-}
+return `${name} (${normalizedPosition})`;
 
 }
 

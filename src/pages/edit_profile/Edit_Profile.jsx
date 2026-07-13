@@ -4,7 +4,7 @@ import { useEffect,useState } from "react";
 
 import { auth,db } from "../../firebase/firebase";
 
-import { ref,get,update } from "firebase/database";
+import { ref,get,update,push,set,remove } from "firebase/database";
 
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +15,6 @@ function Edit_Profile(){
 const navigate = useNavigate();
 
 
-const [club,setClub] = useState("");
-const [league,setLeague] = useState("");
 const [position,setPosition] = useState("");
 const [bio,setBio] = useState("");
 const [height,setHeight] = useState("");
@@ -25,7 +23,7 @@ const [age,setAge] = useState("");
 const [nationality,setNationality] = useState("");
 const [dominantFoot,setDominantFoot] = useState("");
 const [photoURL,setPhotoURL] = useState("");
-const [videoURL,setVideoURL] = useState("");
+const [videos,setVideos] = useState([]);
 
 const [uploading,setUploading] = useState(false);
 
@@ -46,7 +44,7 @@ if(user){
 
 
 const snapshot = await get(
-ref(db,"users/" + user.uid + "/profile")
+ref(db,"users/" + user.uid)
 );
 
 
@@ -55,28 +53,48 @@ if(snapshot.exists()){
 
 const data = snapshot.val();
 
+const profileData = data.profile || {};
 
-setClub(data.club || "");
 
-setLeague(data.league || "");
+setPosition(profileData.position || "");
 
-setPosition(data.position || "");
+setBio(profileData.bio || "");
 
-setBio(data.bio || "");
+setHeight(profileData.height || "");
 
-setHeight(data.height || "");
+setWeight(profileData.weight || "");
 
-setWeight(data.weight || "");
+setAge(profileData.age || "");
 
-setAge(data.age || "");
+setNationality(profileData.nationality || "");
 
-setNationality(data.nationality || "");
+setDominantFoot(profileData.dominantFoot || "");
 
-setDominantFoot(data.dominantFoot || "");
+setPhotoURL(profileData.photoURL || "");
 
-setPhotoURL(data.photoURL || "");
 
-setVideoURL(data.videoURL || "");
+const videosData = data.videos || {};
+
+const videosArray = Object.keys(videosData).map((videoId)=>({
+
+id: videoId,
+
+...videosData[videoId],
+
+}));
+
+
+// Older accounts stored a single video directly on the profile. Show it
+// too (as a non-deletable legacy entry) until it's replaced by real
+// entries in the new "videos" list.
+if(videosArray.length === 0 && profileData.videoURL){
+
+videosArray.push({ id:"legacy", url: profileData.videoURL, legacy:true });
+
+}
+
+
+setVideos(videosArray);
 
 
 }
@@ -173,6 +191,15 @@ return;
 }
 
 
+const user = auth.currentUser;
+
+if(!user){
+
+return;
+
+}
+
+
 setUploading(true);
 
 
@@ -208,23 +235,30 @@ body:formData
 const data = await response.json();
 
 
-
 console.log("VIDEO:",data);
-
 
 
 if(data.secure_url){
 
 
-setVideoURL(data.secure_url);
+const videosRef = ref(db,"users/" + user.uid + "/videos");
+
+const newVideoRef = push(videosRef);
+
+
+const entry = { url:data.secure_url, createdAt:Date.now() };
+
+
+await set(newVideoRef,entry);
+
+
+setVideos((previous)=>[...previous, { id:newVideoRef.key, ...entry }]);
 
 
 }
 
 
-
 setUploading(false);
-
 
 
 }
@@ -237,6 +271,50 @@ console.log(error);
 
 
 setUploading(false);
+
+
+}
+
+
+}
+
+
+
+const deleteVideo = async(videoId)=>{
+
+
+const user = auth.currentUser;
+
+if(!user || videoId === "legacy"){
+
+return;
+
+}
+
+
+if(!window.confirm("Ta heqësh këtë video nga profili?")){
+
+return;
+
+}
+
+
+try{
+
+
+await remove(ref(db,"users/" + user.uid + "/videos/" + videoId));
+
+
+setVideos((previous)=>previous.filter((video)=>video.id !== videoId));
+
+
+}
+
+
+catch(error){
+
+
+console.log(error);
 
 
 }
@@ -272,10 +350,6 @@ ref(db,"users/" + user.uid + "/profile"),
 {
 
 
-club,
-
-league,
-
 position,
 
 bio,
@@ -290,9 +364,7 @@ nationality,
 
 dominantFoot,
 
-photoURL,
-
-videoURL
+photoURL
 
 
 }
@@ -424,7 +496,7 @@ className="preview-image"
 
 <label>
 
-Highlight Video
+Video Highlights
 
 </label>
 
@@ -454,20 +526,60 @@ uploading &&
 
 {
 
-videoURL &&
+videos.length > 0 &&
+
+
+<div className="video-list">
+
+
+{videos.map((video)=>(
+
+
+<div className="video-list-item" key={video.id}>
 
 
 <video
 
-src={videoURL}
+src={video.url}
 
 controls
 
 className="preview-video"
 
+/>
+
+
+
+{
+
+video.id !== "legacy" &&
+
+
+<button
+
+type="button"
+
+className="video-remove-btn"
+
+onClick={()=>deleteVideo(video.id)}
+
 >
 
-</video>
+Hiq videon
+
+</button>
+
+
+}
+
+
+</div>
+
+
+))}
+
+
+</div>
 
 
 }
@@ -484,22 +596,7 @@ className="preview-video"
 
 
 
-<div className="form-group">
 
-<label>Klubi</label>
-
-
-<input
-
-type="text"
-
-value={club}
-
-onChange={(e)=>setClub(e.target.value)}
-
-/>
-
-</div>
 
 
 
@@ -556,24 +653,7 @@ onChange={(e)=>setPosition(e.target.value)}
 
 
 
-<div className="form-group">
 
-<label>Liga / Kampionati</label>
-
-
-<input
-
-type="text"
-
-placeholder="p.sh. Superliga Shqiptare U-19"
-
-value={league}
-
-onChange={(e)=>setLeague(e.target.value)}
-
-/>
-
-</div>
 
 
 
