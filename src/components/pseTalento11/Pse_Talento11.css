@@ -1,5 +1,5 @@
 .pse-talento11 {
-  padding: 120px 100px;
+  padding: 112px 100px;
 
   background: var(--bg-primary);
 }
@@ -9,11 +9,20 @@
 /* ========================= */
 
 .pse-header {
-  max-width: 700px;
+  max-width: 760px;
 
-  margin: 0 auto 80px;
+  margin: 0 auto 62px;
 
   text-align: center;
+}
+
+.pse-eyebrow {
+  display: inline-block;
+  color: var(--brand-teal);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin-bottom: 14px;
 }
 
 .pse-header h2 {
@@ -41,9 +50,9 @@
 
   grid-template-columns: repeat(3, 1fr);
 
-  gap: 30px;
+  gap: 24px;
 
-  margin-bottom: 80px;
+  margin-bottom: 52px;
 }
 
 .pse-card {
@@ -52,7 +61,7 @@
   border: 1px solid var(--border);
   border-radius: 22px;
 
-  padding: 40px 32px;
+  padding: 34px 30px 28px;
 
   text-align: center;
 
@@ -71,7 +80,7 @@
   width: 72px;
   height: 72px;
 
-  margin: 0 auto 24px;
+  margin: 0 auto 20px;
 
   display: flex;
   justify-content: center;
@@ -81,7 +90,13 @@
 
   background: rgba(16, 183, 127, 0.08);
 
+  color: var(--brand-teal);
   font-size: 2rem;
+}
+
+.card-icon svg {
+  width: 33px;
+  height: 33px;
 }
 
 .pse-card h3 {
@@ -90,14 +105,68 @@
 
   color: var(--text-primary);
 
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .pse-card p {
   color: var(--text-secondary);
 
   font-size: 1rem;
-  line-height: 1.8;
+  line-height: 1.7;
+}
+
+.pse-card-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.pse-card-detail svg {
+  color: var(--brand-teal);
+}
+
+.profile-preview-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  max-width: 1200px;
+  margin: 0 auto 22px;
+}
+
+.profile-preview-intro > div > span {
+  color: var(--brand-teal);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.profile-preview-intro h3 {
+  margin: 8px 0 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+}
+
+.profile-preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.profile-preview-tags span {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 /* ========================= */
@@ -109,7 +178,7 @@
   justify-content: center;
   align-items: center;
 
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .mockup-img {
@@ -143,6 +212,16 @@
 
   .pse-cards {
     grid-template-columns: 1fr;
+  }
+
+  .profile-preview-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .profile-preview-tags {
+    justify-content: flex-start;
   }
 
   .mockup-img {

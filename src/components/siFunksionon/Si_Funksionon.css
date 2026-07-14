@@ -1,175 +1,163 @@
 .si-funksionon {
-  padding: 120px 100px;
+  padding: 112px 100px;
   background: var(--bg-primary);
 }
 
-/* ================= HEADER ================= */
-
 .si-header {
-  max-width: 800px;
-  margin: 0 auto 90px;
-
+  max-width: 760px;
+  margin: 0 auto 62px;
   text-align: center;
 }
 
-.si-header h2 {
-  font-size: 3rem;
+.si-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--brand-teal);
+  font-size: 0.76rem;
   font-weight: 800;
+  letter-spacing: 0.12em;
+}
 
+.si-header h2 {
+  margin: 0 0 18px;
   color: var(--text-primary);
-
-  margin-bottom: 20px;
+  font-size: 2.8rem;
+  font-weight: 800;
 }
 
 .si-header p {
-  font-size: 1.4rem;
-  line-height: 1.8;
-
+  margin: 0;
   color: var(--text-secondary);
+  font-size: 1.18rem;
+  line-height: 1.7;
 }
-
-/* ================= STEPS ================= */
 
 .steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-
-  gap: 40px;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
-
-/* ================= STEP ================= */
 
 .step {
   position: relative;
-
-  text-align: center;
+  min-height: 290px;
+  padding: 32px 26px 28px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--bg-secondary);
+  text-align: left;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Vijat lidhëse */
-
-.step:not(:last-child)::after {
-  content: "";
-
+.step::before {
   position: absolute;
-
-  top: 62px;
-  left: 72%;
-
-  width: 95%;
-  height: 2px;
-
-  background: linear-gradient(
-    to right,
-    var(--brand-teal),
-    var(--border)
-  );
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  content: "";
+  background: linear-gradient(90deg, var(--brand-teal), transparent 72%);
+  opacity: 0.75;
 }
 
-/* ================= NUMBER ================= */
-
-.step-number {
-  width: 38px;
-  height: 38px;
-
-  margin: 0 auto 18px;
-
-  border-radius: 50%;
-
-  background: var(--brand-teal);
-
-  color: var(--bg-primary);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 1rem;
-  font-weight: 700;
+.step:hover {
+  transform: translateY(-8px);
+  border-color: var(--brand-teal);
+  box-shadow: 0 16px 35px rgba(16, 183, 127, 0.12);
 }
-
-/* ================= ICON ================= */
 
 .step-icon {
-  width: 75px;
-  height: 75px;
-
-  margin: auto;
-  margin-bottom: 28px;
-
-  border-radius: 50%;
-
-  background: var(--bg-secondary);
-
-  border: 1px solid var(--border);
-
+  position: relative;
   display: flex;
-  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 27px;
   align-items: center;
-
-  font-size: 2.3rem;
-
+  justify-content: center;
+  border: 1px solid rgba(16, 183, 127, 0.28);
+  border-radius: 18px;
+  background: rgba(16, 183, 127, 0.08);
   color: var(--brand-teal);
-
-  transition: .35s;
+  font-size: 1.85rem;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .step:hover .step-icon {
   background: var(--brand-teal);
-
   color: var(--bg-primary);
-
-  transform: translateY(-8px);
 }
 
-/* ================= TEXT ================= */
+.step-number {
+  position: absolute;
+  top: -10px;
+  right: -17px;
+  display: flex;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--bg-secondary);
+  border-radius: 50%;
+  background: var(--brand-teal);
+  color: var(--bg-primary);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.step-label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--brand-teal);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
 
 .step h3 {
-  font-size: 1.55rem;
-  font-weight: 700;
-
+  margin: 0 0 13px;
   color: var(--text-primary);
-
-  margin-bottom: 18px;
+  font-size: 1.36rem;
+  font-weight: 750;
 }
 
 .step p {
+  margin: 0;
   color: var(--text-secondary);
-
-  font-size: 1.05rem;
-  line-height: 1.8;
+  font-size: 0.98rem;
+  line-height: 1.7;
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media (max-width:1200px){
-
-.steps{
-  grid-template-columns:repeat(2,1fr);
-  row-gap:80px;
+@media (max-width: 1200px) {
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.step::after{
-  display:none;
-}
+@media (max-width: 768px) {
+  .si-funksionon {
+    padding: 88px 24px;
+  }
 
-}
+  .si-header {
+    margin-bottom: 42px;
+  }
 
-@media (max-width:768px){
+  .si-header h2 {
+    font-size: 2.3rem;
+  }
 
-.si-funksionon{
-  padding:90px 25px;
-}
+  .si-header p {
+    font-size: 1.05rem;
+  }
 
-.steps{
-  grid-template-columns:1fr;
-}
+  .steps {
+    grid-template-columns: 1fr;
+  }
 
-.si-header h2{
-  font-size:2.3rem;
-}
-
-.si-header p{
-  font-size:1.1rem;
-}
-
+  .step {
+    min-height: auto;
+  }
 }

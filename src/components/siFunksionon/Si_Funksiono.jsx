@@ -12,23 +12,24 @@ function Si_Funksionon() {
     <section id="si-funksionon" className="si-funksionon">
 
       <div className="si-header">
+        <span className="si-eyebrow">NGA PROFILI TE MUNDËSIA</span>
         <h2>Si funksionon?</h2>
 
         <p>
-          Vetëm katër hapa për të shfaqur talentin tënd para
-          scoutëve dhe klubeve.
+          Në katër hapa të thjeshtë, krijo prezencën tënde profesionale dhe
+          bëhu i dukshëm për futbollin.
         </p>
       </div>
 
       <div className="steps">
 
         <div className="step">
-          <div className="step-number">1</div>
-
           <div className="step-icon">
             <LuUserPlus />
+            <span className="step-number">01</span>
           </div>
 
+          <span className="step-label">HAPI I PARË</span>
           <h3>Regjistrohu</h3>
 
           <p>
@@ -38,12 +39,12 @@ function Si_Funksionon() {
         </div>
 
         <div className="step">
-          <div className="step-number">2</div>
-
           <div className="step-icon">
             <LuBadgeInfo />
+            <span className="step-number">02</span>
           </div>
 
+          <span className="step-label">HAPI I DYTË</span>
           <h3>Krijo Profilin</h3>
 
           <p>
@@ -54,12 +55,12 @@ function Si_Funksionon() {
         </div>
 
         <div className="step">
-          <div className="step-number">3</div>
-
           <div className="step-icon">
             <LuVideo />
+            <span className="step-number">03</span>
           </div>
 
+          <span className="step-label">HAPI I TRETË</span>
           <h3>Ngarko Videot</h3>
 
           <p>
@@ -70,12 +71,12 @@ function Si_Funksionon() {
         </div>
 
         <div className="step">
-          <div className="step-number">4</div>
-
           <div className="step-icon">
             <LuHandshake />
+            <span className="step-number">04</span>
           </div>
 
+          <span className="step-label">HAPI I KATËRT</span>
           <h3>Lidhu me Klubet</h3>
 
           <p>
