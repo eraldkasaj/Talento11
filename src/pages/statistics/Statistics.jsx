@@ -25,6 +25,8 @@ const [minutes,setMinutes] = useState("");
 const [yellowCards,setYellowCards] = useState("");
 const [redCards,setRedCards] = useState("");
 
+const [saving,setSaving] = useState(false);
+
 
 
 
@@ -98,6 +100,8 @@ const saveStats = async(e)=>{
 e.preventDefault();
 
 
+setSaving(true);
+
 
 try{
 
@@ -126,7 +130,7 @@ console.log("Statistikat u ruajten");
 
 
 
-navigate("/my-profile");
+navigate("/player-dashboard");
 
 
 
@@ -138,6 +142,9 @@ catch(error){
 
 
 console.log(error.message);
+
+
+setSaving(false);
 
 
 }
@@ -325,9 +332,9 @@ onChange={(e)=>setRedCards(e.target.value)}
 
 
 
-<button type="submit">
+<button type="submit" disabled={saving}>
 
-Ruaj Statistikat
+{saving ? "Duke ruajtur..." : "Ruaj Statistikat"}
 
 </button>
 

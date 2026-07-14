@@ -2,13 +2,14 @@ import "../../pages/player_dashboard/Player_Dashboard.css";
 
 import { useEffect,useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 import { db } from "../../firebase/firebase";
 
 import { ref,get } from "firebase/database";
 
 import {
+LuArrowLeft,
 LuFootprints,
 LuMapPin,
 LuPlay,
@@ -135,6 +136,8 @@ function Player_Profile(){
 
 const {id}=useParams();
 
+const navigate=useNavigate();
+
 
 const [player,setPlayer]=useState(null);
 
@@ -185,19 +188,77 @@ const stats=player.stats || {};
 const fullName=`${player.name} ${player.surname}`;
 
 
-const club=profile.club || "Klubi nuk është vendosur";
+const careerEntries=Object.entries(player.career || {})
+
+.map(([entryId,entry])=>({id:entryId,...entry}))
+
+.sort((a,b)=>(Number(b.startYear)||0)-(Number(a.startYear)||0));
 
 
-const league=profile.league || "Superliga Shqiptare U-19";
+// Same rule as Player_Dashboard.jsx: the current club/league come from the
+// career entry the player marked as ongoing (no endYear), falling back to
+// the legacy profile.club/profile.league for older accounts.
+const currentCareerEntry=careerEntries.find((entry)=>!entry.endYear);
+
+
+const club=currentCareerEntry?.club || profile.club || "Klubi nuk është vendosur";
+
+
+const league=currentCareerEntry?.league || profile.league || "Superliga Shqiptare U-19";
 
 
 const pitchPosition=getPitchPosition(profile.position);
+
+
+const videoEntries=player.videos
+
+? Object.entries(player.videos)
+
+.map(([videoId,video])=>({id:videoId,...video}))
+
+.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
+
+: profile.videoURL
+
+? [{id:"legacy",url:profile.videoURL}]
+
+: [];
+
+
+const dominantFootLabel=
+
+profile.dominantFoot==="Right" ? "E djathtë" :
+
+profile.dominantFoot==="Left" ? "E majtë" :
+
+profile.dominantFoot==="Both" ? "Të dyja" :
+
+"—";
 
 
 return(
 
 
 <main className="talento-player-dashboard">
+
+
+<div className="talento-player-back-row">
+
+<button
+
+type="button"
+
+className="talento-player-back"
+
+onClick={()=>navigate(-1)}
+
+>
+
+<LuArrowLeft/> Kthehu mbrapa
+
+</button>
+
+</div>
 
 
 <section className="talento-player-panel">
@@ -312,7 +373,7 @@ Verified
 
 <div>
 
-<strong><LuFootprints/> {profile.dominantFoot || "—"}</strong>
+<strong><LuFootprints/> {dominantFootLabel}</strong>
 
 <span>Këmba e preferuar</span>
 
@@ -348,7 +409,7 @@ Verified
 
 {
 
-["Përmbledhje","Statistikat","Media"].map(tab=>(
+["Përmbledhje","Statistikat","Media","Karriera"].map(tab=>(
 
 
 <button
@@ -406,6 +467,12 @@ activeTab==="Përmbledhje" &&
 
 <div className={`talento-player-pitch talento-player-pitch--${pitchPosition.toLowerCase()}`}>
 
+<div className="talento-player-pitch-center" />
+
+<div className="talento-player-pitch-box talento-player-pitch-box-left" />
+
+<div className="talento-player-pitch-box talento-player-pitch-box-right" />
+
 <span/>
 
 </div>
@@ -460,6 +527,74 @@ statItems.map(([key,label])=>(
 </div>
 
 
+
+</section>
+
+
+
+<section className="talento-player-club-card">
+
+<div className="talento-player-club-mark"><LuShield/></div>
+
+<div>
+
+<span>Klubi aktual</span>
+
+<h2>{club}</h2>
+
+<p>🇦🇱 {league}</p>
+
+</div>
+
+</section>
+
+
+
+<section className="talento-player-highlights">
+
+<div className="talento-player-section-heading"><h2>Highlights</h2></div>
+
+{
+
+videoEntries.length > 0 ?
+
+
+<div className="talento-player-video-grid">
+
+{videoEntries.map((video)=>(
+
+<div className="talento-player-video-wrap" key={video.id}>
+
+<video
+
+src={video.url}
+
+controls
+
+className="talento-player-video"
+
+/>
+
+</div>
+
+))}
+
+</div>
+
+
+:
+
+
+<div className="talento-player-empty-video">
+
+<LuPlay/>
+
+<span>Nuk ka video akoma</span>
+
+</div>
+
+
+}
 
 </section>
 
@@ -529,23 +664,35 @@ activeTab==="Media" &&
 <section className="talento-player-tab-dashboard">
 
 
-<h2>Highlights</h2>
+<div className="talento-player-section-heading"><h2>Video Highlights</h2></div>
 
 
 {
 
-profile.videoURL ?
+videoEntries.length > 0 ?
 
+
+<div className="talento-player-video-grid">
+
+{videoEntries.map((video)=>(
+
+<div className="talento-player-video-wrap" key={video.id}>
 
 <video
 
-src={profile.videoURL}
+src={video.url}
 
 controls
 
 className="talento-player-video"
 
 />
+
+</div>
+
+))}
+
+</div>
 
 
 :
@@ -558,6 +705,73 @@ className="talento-player-video"
 <span>Nuk ka video</span>
 
 </div>
+
+
+}
+
+
+</section>
+
+
+}
+
+
+
+
+{
+
+
+activeTab==="Karriera" &&
+
+
+<section className="talento-player-tab-dashboard">
+
+
+<div className="talento-player-section-heading"><h2>Karriera</h2></div>
+
+
+{
+
+careerEntries.length===0 ?
+
+
+<p className="talento-player-career-empty">
+
+Ky lojtar ende s'ka shtuar histori karriere.
+
+</p>
+
+
+:
+
+
+careerEntries.map((entry)=>(
+
+
+<div className="talento-player-career-entry" key={entry.id}>
+
+
+<div className="talento-player-club-mark"><LuShield/></div>
+
+
+<div>
+
+<span>{entry.endYear ? "Ish klub" : "Klubi aktual"}</span>
+
+<h3>{entry.club}</h3>
+
+<p>{entry.league ? `🇦🇱 ${entry.league}` : "Kampionati nuk është vendosur"}</p>
+
+</div>
+
+
+<time>{entry.startYear} – {entry.endYear || "Aktual"}</time>
+
+
+</div>
+
+
+))
 
 
 }

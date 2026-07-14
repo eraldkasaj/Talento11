@@ -1,5 +1,6 @@
 import "./Player_Card.css";
 import { Link } from "react-router-dom";
+import { LuShield } from "react-icons/lu";
 
 
 function PlayerCard({player}){
@@ -8,6 +9,9 @@ function PlayerCard({player}){
 return(
 
 <div className="player-card">
+
+
+<div className="player-image-wrap">
 
 
 {
@@ -31,6 +35,23 @@ FOTO
 }
 
 
+<span className="player-badge player-badge--position">
+
+{player.profile?.position ? player.profile.position.toUpperCase() : "—"}
+
+</span>
+
+
+<span className="player-badge player-badge--age">
+
+{player.profile?.age ? `${player.profile.age} vjeç` : "Mosha —"}
+
+</span>
+
+
+</div>
+
+
 <div className="player-info">
 
 
@@ -41,40 +62,19 @@ FOTO
 </h3>
 
 
-<span className="player-position">
-
-{player.profile?.position || "Pozicion"}
-
-</span>
+<div className="player-meta">
 
 
-<p className="player-club">
+<span className="player-club">
 
-🏟 {player.profile?.club || "Pa klub"}
-
-</p>
-
-
-<p className="player-details">
-
-{player.profile?.age || "-"} vjeç · 🇦🇱 {player.profile?.nationality || "-"}
-
-</p>
-
-
-<div className="player-stats">
-
-
-<span>
-
-⚽ {player.stats?.goals || 0} gola
+<LuShield/> {player.profile?.club || "Pa klub"}
 
 </span>
 
 
-<span>
+<span className="player-league">
 
-🎯 {player.stats?.assists || 0} asist
+{player.profile?.league || "Kampionati nuk është vendosur"}
 
 </span>
 
