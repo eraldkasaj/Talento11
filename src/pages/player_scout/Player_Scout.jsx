@@ -70,7 +70,9 @@ function Player_Scout() {
           </div>
 
 
-          <div className="category-card">
+          <div className="category-card category-card--soon">
+
+            <span className="category-badge">Së shpejti</span>
 
             <div className="category-icon">
 
@@ -91,13 +93,20 @@ function Player_Scout() {
             </p>
 
 
-            <Link to="/scouts" className="category-btn">
+            <button type="button" className="category-btn category-btn--disabled" disabled>
 
               Shiko Scoutët
 
               <LuArrowRight className="category-btn-icon" />
 
-            </Link>
+            </button>
+
+
+            <span className="category-soon-note">
+
+              Kjo veçori do të aktivizohet së shpejti.
+
+            </span>
 
 
           </div>

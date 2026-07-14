@@ -1,105 +1,150 @@
 import "./Lojtaret_Ne_Fokus.css";
 
+import { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
+import PlayerCard from "../player_card/Player_Card";
+
+import { db } from "../../firebase/firebase";
+
+import { ref, get } from "firebase/database";
+
+
 function Lojtaret_Ne_Fokus() {
-  return (
-    <section className="featured-players">
 
-      <div className="featured-header">
-        <h2>Lojtarët në Fokus</h2>
 
-        <p>
-          Lojtarë që po tërheqin vëmendjen e
-          skautëve, akademive dhe klubeve.
-        </p>
-      </div>
+const [players, setPlayers] = useState([]);
 
-      <div className="featured-grid">
+const [loading, setLoading] = useState(true);
 
-        <div className="featured-card">
 
-          <div className="player-image">
-            FOTO
-          </div>
+useEffect(() => {
 
-          <h3>Klajdi Salaj</h3>
 
-          <span className="player-position">
-            CB
-          </span>
+const getFeaturedPlayers = async () => {
 
-          <p className="player-age">
-            18 vjeç
-          </p>
 
-          <div className="player-stats">
-            <span>🎥 12 Video</span>
-            <span>👁 2.4K Views</span>
-          </div>
+const usersRef = ref(db, "users");
 
-          <button>
-            Shiko Profilin
-          </button>
 
-        </div>
+const snapshot = await get(usersRef);
 
-        <div className="featured-card">
 
-          <div className="player-image">
-            FOTO
-          </div>
+if (snapshot.exists()) {
 
-          <h3>Denis Hoxha</h3>
 
-          <span className="player-position">
-            ST
-          </span>
+const data = snapshot.val();
 
-          <p className="player-age">
-            17 vjeç
-          </p>
 
-          <div className="player-stats">
-            <span>🎥 8 Video</span>
-            <span>👁 1.8K Views</span>
-          </div>
+const playersArray = Object.keys(data)
 
-          <button>
-            Shiko Profilin
-          </button>
+.map((uid) => ({ uid, ...data[uid] }))
 
-        </div>
+.filter((user) => user.role === "player");
 
-        <div className="featured-card">
 
-          <div className="player-image">
-            FOTO
-          </div>
+// Prefer players with a complete-looking profile (photo + at least one
+// highlight video) so the homepage showcase looks its best; fall back
+// to any players if there aren't 4 like that yet.
 
-          <h3>Enea Dema</h3>
+const withPhotoAndVideo = playersArray.filter(
 
-          <span className="player-position">
-            CM
-          </span>
+(player) => player.profile?.photoURL && (player.videos || player.profile?.videoURL)
 
-          <p className="player-age">
-            19 vjeç
-          </p>
+);
 
-          <div className="player-stats">
-            <span>🎥 15 Video</span>
-            <span>👁 3.1K Views</span>
-          </div>
 
-          <button>
-            Shiko Profilin
-          </button>
+const pool = withPhotoAndVideo.length >= 4 ? withPhotoAndVideo : playersArray;
 
-        </div>
 
-      </div>
+setPlayers(pool.slice(0, 4));
 
-    </section>
-  );
+
 }
+
+
+setLoading(false);
+
+
+};
+
+
+getFeaturedPlayers();
+
+
+}, []);
+
+
+if (!loading && players.length === 0) {
+
+return null;
+
+}
+
+
+return (
+
+<section className="featured-players">
+
+
+<div className="featured-header">
+
+<h2>Lojtarët në Fokus</h2>
+
+
+<p>
+
+Lojtarë që po tërheqin vëmendjen e
+
+skautëve, akademive dhe klubeve.
+
+</p>
+
+</div>
+
+
+{loading ? (
+
+<p className="featured-loading">Duke ngarkuar lojtarët...</p>
+
+) : (
+
+<>
+
+<div className="featured-grid">
+
+
+{players.map((player) => (
+
+<PlayerCard key={player.uid} player={player} />
+
+))}
+
+
+</div>
+
+
+<div className="featured-footer">
+
+<Link to="/players" className="featured-view-all">
+
+Shiko të gjithë lojtarët
+
+</Link>
+
+</div>
+
+</>
+
+)}
+
+
+</section>
+
+);
+
+}
+
 
 export default Lojtaret_Ne_Fokus;

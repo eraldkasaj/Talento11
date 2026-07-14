@@ -10,6 +10,8 @@ import { db } from "../../firebase/firebase";
 
 import { ref, get } from "firebase/database";
 
+import { LuSearch, LuX } from "react-icons/lu";
+
 
 function Players(){
 
@@ -171,6 +173,22 @@ filteredPlayers.sort(
 }
 
 
+const hasActiveFilters = search !== "" || position !== "" || age !== "" || sort !== "";
+
+
+const resetFilters = () => {
+
+setSearch("");
+
+setPosition("");
+
+setAge("");
+
+setSort("");
+
+};
+
+
 return(
 
 <>
@@ -184,6 +202,8 @@ return(
 
 <div className="players-header">
 
+<span className="players-eyebrow">Talento11</span>
+
 <h1>Lojtarët</h1>
 
 <p>
@@ -195,20 +215,49 @@ Zbulo talentet e platformës Talento11.
 </div>
 
 
+<div className="players-filter-panel">
+
+
 <div className="players-filters">
 
+
+<div className="players-search-input">
+
+<LuSearch />
 
 <input
 
 type="text"
 
-placeholder="🔍 Kërko lojtar..."
+placeholder="Kërko lojtar..."
 
 value={search}
 
 onChange={(e)=>setSearch(e.target.value)}
 
 />
+
+{search && (
+
+<button
+
+type="button"
+
+className="players-search-clear"
+
+onClick={()=>setSearch("")}
+
+aria-label="Pastro kërkimin"
+
+>
+
+<LuX />
+
+</button>
+
+)}
+
+</div>
 
 
 <select
@@ -310,7 +359,40 @@ Mosha ↓
 </select>
 
 
+{hasActiveFilters && (
+
+<button
+
+type="button"
+
+className="players-reset-btn"
+
+onClick={resetFilters}
+
+>
+
+Pastro filtrat
+
+</button>
+
+)}
+
+
 </div>
+
+
+</div>
+
+
+{!loading && (
+
+<p className="players-count">
+
+{filteredPlayers.length} {filteredPlayers.length === 1 ? "lojtar u gjet" : "lojtarë u gjetën"}
+
+</p>
+
+)}
 
 
 {loading && (

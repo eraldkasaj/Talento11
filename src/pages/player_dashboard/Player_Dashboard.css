@@ -17,6 +17,44 @@
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
 }
 
+.talento-player-back-row {
+  width: min(1160px, 100%);
+  margin: 0 auto 16px;
+}
+
+.talento-player-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: 1px solid #24354c;
+  border-radius: 999px;
+  background: #0b192d;
+  color: #d9e4f2;
+
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+
+  padding: 10px 18px 10px 14px;
+
+  appearance: none;
+  cursor: pointer;
+  transition: border-color .2s ease, color .2s ease, transform .2s ease, background .2s ease;
+}
+
+.talento-player-back svg {
+  font-size: 16px;
+}
+
+.talento-player-back:hover {
+  border-color: var(--brand-green);
+  color: var(--brand-green);
+  background: #0f2036;
+  transform: translateX(-2px);
+}
+
 .talento-player-actions {
   display: flex;
   justify-content: flex-end;
