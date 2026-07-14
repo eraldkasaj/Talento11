@@ -4,8 +4,6 @@ import "./Navbar.css"
 
 import logo_img from "../../assets/images/logo.png"
 
-import { Link as ScrollLink } from "react-scroll";
-
 import { Link } from "react-router-dom";
 
 
@@ -37,46 +35,22 @@ function Navbar() {
 
         <li>
 
-          <ScrollLink
-
-            to="si-funksionon"
-
-            smooth={true}
-
-            duration={500}
-
-            offset={50}
-
-            onClick={closeMenu}
-
-          >
+          <Link to="/#si-funksionon" onClick={closeMenu}>
 
             Si funksionon ?
 
-          </ScrollLink>
+          </Link>
 
         </li>
 
 
         <li>
 
-          <ScrollLink
-
-            to="pse-talento11"
-
-            smooth={true}
-
-            duration={500}
-
-            offset={50}
-
-            onClick={closeMenu}
-
-          >
+          <Link to="/#pse-talento11" onClick={closeMenu}>
 
             Pse Talento11 ?
 
-          </ScrollLink>
+          </Link>
 
         </li>
 

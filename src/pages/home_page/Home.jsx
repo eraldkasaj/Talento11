@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../../components/navbar/Navbar";
 import Hero from "../../components/hero/Hero";
 import Pse_Talento11 from "../../components/pseTalento11/Pse_Talento11";
@@ -7,6 +9,18 @@ import Footer from "../../components/footer/Footer";
 
 function Home() {
 
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+
+    const section = document.querySelector(hash);
+    if (!section) return;
+
+    requestAnimationFrame(() => {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, [hash]);
 
   return (
     <>
