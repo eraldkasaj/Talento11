@@ -1,106 +1,60 @@
 import "./Player_Card.css";
 import { Link } from "react-router-dom";
-import { LuShield } from "react-icons/lu";
+import {
+  LuBadgeCheck,
+  LuCalendarDays,
+  LuChevronRight,
+  LuShield,
+  LuTrophy,
+} from "react-icons/lu";
 
+function PlayerCard({ player }) {
+  const profile = player.profile || {};
+  const careerEntries = Object.values(player.career || {});
+  const currentCareerEntry = careerEntries.find((entry) => !entry.endYear) || careerEntries[careerEntries.length - 1];
+  const club = currentCareerEntry?.club || profile.club || "Klubi nuk është vendosur";
+  const league = currentCareerEntry?.league || profile.league || "Kampionati nuk është vendosur";
+  const fullName = `${player.name || ""} ${player.surname || ""}`.trim() || "Lojtar";
+  const age = profile.age ? `${profile.age} vjeç` : "Mosha —";
+  const birthdate = profile.birthdate || profile.dateOfBirth || "—";
 
-function PlayerCard({player}){
+  return (
+    <article className="player-card">
+      <div className="player-image-wrap">
+        {profile.photoURL ? (
+          <img src={profile.photoURL} className="player-image" alt={fullName} />
+        ) : (
+          <div className="player-image-placeholder" aria-label="Foto e lojtarit mungon">
+            <span>{fullName.split(" ").map((name) => name[0]).join("").slice(0, 2)}</span>
+          </div>
+        )}
 
+        <span className="player-badge player-badge--position">
+          {profile.position ? profile.position.toUpperCase() : "—"}
+        </span>
+      </div>
 
-return(
+      <div className="player-info">
+        <div className="player-name-row">
+          <h3>{fullName}</h3>
+          <LuBadgeCheck className="player-verified" aria-label="Profil i verifikuar" />
+        </div>
 
-<div className="player-card">
+        <div className="player-meta">
+          <span><LuShield /> {club}</span>
+          <span><LuTrophy /> {league}</span>
+          <span className="player-age-birthdate">
+            <LuCalendarDays />
+            {age} <span className="player-date-separator">•</span> {birthdate}
+          </span>
+        </div>
 
-
-<div className="player-image-wrap">
-
-
-{
-
-player.profile?.photoURL ?
-
-<img
-src={player.profile.photoURL}
-className="player-image"
-alt={`${player.name} ${player.surname}`}
-/>
-
-:
-
-<div className="player-image-placeholder">
-
-FOTO
-
-</div>
-
+        <Link to={`/players/${player.uid}`} className="profile-btn">
+          Shiko Profilin <LuChevronRight />
+        </Link>
+      </div>
+    </article>
+  );
 }
-
-
-<span className="player-badge player-badge--position">
-
-{player.profile?.position ? player.profile.position.toUpperCase() : "—"}
-
-</span>
-
-
-<span className="player-badge player-badge--age">
-
-{player.profile?.age ? `${player.profile.age} vjeç` : "Mosha —"}
-
-</span>
-
-
-</div>
-
-
-<div className="player-info">
-
-
-<h3>
-
-{player.name} {player.surname}
-
-</h3>
-
-
-<div className="player-meta">
-
-
-<span className="player-club">
-
-<LuShield/> {player.profile?.club || "Pa klub"}
-
-</span>
-
-
-<span className="player-league">
-
-{player.profile?.league || "Kampionati nuk është vendosur"}
-
-</span>
-
-
-</div>
-
-
-<Link
-to={`/players/${player.uid}`}
-className="profile-btn"
->
-
-Shiko Profilin
-
-</Link>
-
-
-</div>
-
-
-</div>
-
-)
-
-
-}
-
 
 export default PlayerCard;

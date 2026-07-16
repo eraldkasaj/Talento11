@@ -195,7 +195,7 @@
   background: var(--border);
 }
 
-/* Right side / player card */
+/* ===================== Right side / phone mockup ===================== */
 
 .hero-right {
   position: relative;
@@ -208,20 +208,71 @@
   align-items: center;
 }
 
-.hero-img-wrapper {
+/* Phone bezel wrapping the real PlayerCard, so the hero looks like a
+   screenshot of the app open on a phone rather than a flat product image. */
+
+.hero-phone-frame {
   position: relative;
+
+  width: min(300px, 100%);
+
+  padding: 16px 14px 22px;
+
+  background: linear-gradient(160deg, #1a2335, #0a1220);
+  border: 1px solid #2b3750;
+  border-radius: 42px;
+
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(23, 178, 106, 0.12),
+    inset 0 0 0 2px rgba(255, 255, 255, 0.03);
 
   animation: hero-float 5s ease-in-out infinite;
 }
 
-.hero-img {
-  width: 100%;
-  max-width: 520px;
+.hero-phone-notch {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  object-fit: contain;
+  width: 90px;
+  height: 18px;
 
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.45))
-    drop-shadow(0 0 30px rgba(23, 178, 106, 0.15));
+  background: #0a1220;
+  border-radius: 999px;
+
+  z-index: 2;
+}
+
+.hero-phone-screen {
+  position: relative;
+
+  overflow: hidden;
+  border-radius: 28px;
+
+  background: var(--bg-primary);
+
+  padding: 30px 12px 12px;
+}
+
+.hero-phone-home-indicator {
+  width: 90px;
+  height: 4px;
+
+  margin: 14px auto 0;
+
+  background: #2b3750;
+  border-radius: 999px;
+}
+
+.hero-img-wrapper {
+  position: relative;
+}
+
+.hero-img-wrapper .player-card {
+  box-shadow: none;
+  border-color: rgba(23, 178, 106, 0.35);
 }
 
 /* ===================== Animations ===================== */
@@ -320,5 +371,9 @@
   .hero-stats {
     gap: 16px;
     flex-wrap: wrap;
+  }
+
+  .hero-phone-frame {
+    width: min(260px, 100%);
   }
 }

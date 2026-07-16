@@ -5,9 +5,12 @@ import { ref, get, push, set, remove } from "firebase/database";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import {
+  formatBirthdate,
+  getPlayerAge,
+} from "../../utils/age";
+import {
   LuFootprints,
   LuLogOut,
-  LuMapPin,
   LuPencil,
   LuPlay,
   LuPlus,
@@ -250,6 +253,8 @@ function Player_Dashboard() {
   };
 
   const profile = userData?.profile ?? {};
+  const birthdate = profile.birthdate || profile.dateOfBirth;
+  const age = getPlayerAge(profile);
   const stats = userData?.stats ?? {};
   const fullName = [userData?.name, userData?.surname].filter(Boolean).join(" ") || "Profili im";
   const pitchPosition = getPitchPosition(profile.position);
@@ -311,7 +316,10 @@ function Player_Dashboard() {
 
             <div className="talento-player-facts">
               <div>
-                <strong>{profile.age || "—"}</strong>
+                <strong>
+                  {age ?? "—"}
+                  {birthdate ? ` (${formatBirthdate(birthdate)})` : ""}
+                </strong>
                 <span>Mosha</span>
               </div>
               <div>
@@ -323,7 +331,7 @@ function Player_Dashboard() {
                 <span>Pozicioni</span>
               </div>
               <div>
-                <strong><LuMapPin /> {profile.nationality || "—"}</strong>
+                <strong>{profile.nationality || "—"}</strong>
                 <span>Kombësia</span>
               </div>
               <div>

@@ -8,6 +8,40 @@ import { ref,get,update,push,set,remove } from "firebase/database";
 
 import { useNavigate } from "react-router-dom";
 
+import { calculateAgeFromBirthdate } from "../../utils/age";
+
+
+// Countries most relevant for an Albanian-speaking scouting platform first,
+// followed by other common nationalities. If a player's saved nationality
+// isn't in this list (e.g. an older free-text value), it's added dynamically
+// below so it still shows up instead of getting silently dropped.
+const NATIONALITY_OPTIONS = [
+  "Albania",
+  "Kosovo",
+  "North Macedonia",
+  "Montenegro",
+  "Serbia",
+  "Croatia",
+  "Bosnia and Herzegovina",
+  "Slovenia",
+  "Greece",
+  "Italy",
+  "Switzerland",
+  "Germany",
+  "Austria",
+  "France",
+  "Belgium",
+  "Netherlands",
+  "England",
+  "Spain",
+  "Portugal",
+  "Turkey",
+  "United States",
+  "Canada",
+  "Brazil",
+  "Argentina",
+  "Other",
+];
 
 function Edit_Profile(){
 
@@ -20,6 +54,7 @@ const [bio,setBio] = useState("");
 const [height,setHeight] = useState("");
 const [weight,setWeight] = useState("");
 const [age,setAge] = useState("");
+const [birthdate,setBirthdate] = useState("");
 const [nationality,setNationality] = useState("");
 const [dominantFoot,setDominantFoot] = useState("");
 const [photoURL,setPhotoURL] = useState("");
@@ -64,7 +99,13 @@ setHeight(profileData.height || "");
 
 setWeight(profileData.weight || "");
 
-setAge(profileData.age || "");
+setBirthdate(profileData.birthdate || profileData.dateOfBirth || "");
+
+setAge(
+  calculateAgeFromBirthdate(profileData.birthdate || profileData.dateOfBirth) ??
+    profileData.age ??
+    ""
+);
 
 setNationality(profileData.nationality || "");
 
@@ -341,6 +382,8 @@ try{
 
 const user = auth.currentUser;
 
+const computedAge = calculateAgeFromBirthdate(birthdate);
+
 
 
 await update(
@@ -358,7 +401,9 @@ height,
 
 weight,
 
-age,
+age: computedAge ?? age,
+
+birthdate,
 
 nationality,
 
@@ -392,6 +437,17 @@ console.log(error.message);
 
 
 }
+
+
+// Make sure a previously-saved nationality that isn't in the default list
+// (e.g. free text from before this was a select) still appears as an option
+// instead of silently disappearing.
+
+const nationalityOptions = nationality && !NATIONALITY_OPTIONS.includes(nationality)
+
+? [nationality, ...NATIONALITY_OPTIONS]
+
+: NATIONALITY_OPTIONS;
 
 
 
@@ -751,15 +807,47 @@ onChange={(e)=>setWeight(e.target.value)}
 
 <input
 
-type="number"
+type="text"
 
-value={age}
+readOnly
 
-onChange={(e)=>setAge(e.target.value)}
+value={calculateAgeFromBirthdate(birthdate) ?? (age || "—")}
 
 />
 
 </div>
+
+
+
+
+
+
+<div className="form-group">
+
+<label>Datëlindja</label>
+
+
+<input
+
+type="date"
+
+value={birthdate}
+
+onChange={(e)=>{
+
+const nextBirthdate = e.target.value;
+
+setBirthdate(nextBirthdate);
+
+setAge(calculateAgeFromBirthdate(nextBirthdate) ?? "");
+
+}}
+
+/>
+
+</div>
+
+
 
 
 
@@ -775,15 +863,27 @@ onChange={(e)=>setAge(e.target.value)}
 <label>Kombesia</label>
 
 
-<input
-
-type="text"
+<select
 
 value={nationality}
 
 onChange={(e)=>setNationality(e.target.value)}
 
-/>
+>
+
+<option value="">Zgjidh kombësinë</option>
+
+{nationalityOptions.map((option)=>(
+
+<option key={option} value={option}>
+
+{option}
+
+</option>
+
+))}
+
+</select>
 
 </div>
 

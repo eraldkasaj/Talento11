@@ -16,6 +16,8 @@ LuPlay,
 LuShield
 } from "react-icons/lu";
 
+import { formatBirthdate, getPlayerAge } from "../../utils/age";
+
 
 const statItems=[
 
@@ -182,6 +184,10 @@ return <p>Duke ngarkuar...</p>
 
 const profile=player.profile || {};
 
+const birthdate=profile.birthdate || profile.dateOfBirth;
+
+const age=getPlayerAge(profile);
+
 const stats=player.stats || {};
 
 
@@ -332,7 +338,10 @@ Verified
 
 <div>
 
-<strong>{profile.age || "—"}</strong>
+<strong>
+{age ?? "—"}
+{birthdate ? ` (${formatBirthdate(birthdate)})` : ""}
+</strong>
 
 <span>Mosha</span>
 
