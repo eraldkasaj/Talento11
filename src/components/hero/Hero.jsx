@@ -1,134 +1,218 @@
 import "./Hero.css";
 
-import hero_img from "../../assets/images/hero.png"
+import { useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
 import { Link as ScrollLink } from "react-scroll";
 
+import PlayerCard from "../player_card/Player_Card";
+
+import { db } from "../../firebase/firebase";
+
+import { ref, get } from "firebase/database";
+
 
 function Hero() {
 
-  return (
 
-    <section className="hero">
+const [featuredPlayer, setFeaturedPlayer] = useState(null);
 
 
-      <div className="hero-glow" aria-hidden="true"></div>
+useEffect(() => {
 
 
-      <div className="hero-left">
+const getFeaturedPlayer = async () => {
 
 
-        <span className="hero-badge">
+const usersRef = ref(db, "users");
 
-          <span className="hero-badge-dot"></span>
 
-          Platforma e parë e skautimit në Shqipëri
+const snapshot = await get(usersRef);
 
-        </span>
 
+if (snapshot.exists()) {
 
-        <h1>
 
-          Shfaq talentin tënd.
+const data = snapshot.val();
 
-          <br />
 
-          Bëhu <span className="hero-highlight">i dukshëm</span> për skautët.
+const playersArray = Object.keys(data)
 
-        </h1>
+.map((uid) => ({ uid, ...data[uid] }))
 
+.filter((user) => user.role === "player");
 
-        <p>
 
-          Krijo profilin tënd, ngarko videot e ndeshjeve<br/>
+// Prefer a player with a complete-looking profile (photo + club) so
+// the hero showcase looks its best; fall back to any player if none
+// like that exist yet.
 
-          dhe lidhu me klube dhe skautë.
+const complete = playersArray.filter(
 
-        </p>
+(player) => player.profile?.photoURL && player.profile?.club
 
+);
 
-        <div className="hero-buttons">
 
-          <Link to="/register" className="hero-register">
+const pool = complete.length > 0 ? complete : playersArray;
 
-            Regjistrohu
 
-          </Link>
+if (pool.length > 0) {
 
+setFeaturedPlayer(pool[Math.floor(Math.random() * pool.length)]);
 
-          <ScrollLink
+}
 
-            to="si-funksionon"
 
-            smooth={true}
+}
 
-            duration={500}
 
-            offset={50}
+};
 
-            className="hero-learn"
 
-          >
+getFeaturedPlayer();
 
-            Mëso më shumë
 
-          </ScrollLink>
+}, []);
 
-        </div>
 
+return (
 
-        <div className="hero-stats">
+<section className="hero">
 
-          <div className="hero-stat">
 
-            <h3>1,248+</h3>
+<div className="hero-glow" aria-hidden="true"></div>
 
-            <p>Lojtarë të regjistruar</p>
 
-          </div>
+<div className="hero-left">
 
-          <div className="hero-stat-divider"></div>
 
-          <div className="hero-stat">
+<span className="hero-badge">
 
-            <h3>60+</h3>
+<span className="hero-badge-dot"></span>
 
-            <p>Skautë aktivë</p>
+Platforma e parë e skautimit në Shqipëri
 
-          </div>
+</span>
 
-          <div className="hero-stat-divider"></div>
 
-          <div className="hero-stat">
+<h1>
 
-            <h3>18</h3>
+Shfaq talentin tënd.
 
-            <p>Klube partnere</p>
+<br />
 
-          </div>
+Bëhu <span className="hero-highlight">i dukshëm</span> për skautët.
 
-        </div>
+</h1>
 
 
-      </div>
+<p>
 
+Krijo profilin tënd, ngarko videot e ndeshjeve<br/>
 
-      <div className="hero-right">
+dhe lidhu me klube dhe skautë.
 
-        <div className="hero-img-wrapper">
+</p>
 
-          <img src={hero_img} alt="Profil lojtari në Talento11" className="hero-img" />
 
-        </div>
+<div className="hero-buttons">
 
-      </div>
+<Link to="/register" className="hero-register">
 
+Regjistrohu
 
-    </section>
+</Link>
 
-  );
+
+<ScrollLink
+
+to="si-funksionon"
+
+smooth={true}
+
+duration={500}
+
+offset={50}
+
+className="hero-learn"
+
+>
+
+Mëso më shumë
+
+</ScrollLink>
+
+</div>
+
+
+<div className="hero-stats">
+
+<div className="hero-stat">
+
+<h3>1,248+</h3>
+
+<p>Lojtarë të regjistruar</p>
+
+</div>
+
+<div className="hero-stat-divider"></div>
+
+<div className="hero-stat">
+
+<h3>60+</h3>
+
+<p>Skautë aktivë</p>
+
+</div>
+
+<div className="hero-stat-divider"></div>
+
+<div className="hero-stat">
+
+<h3>18</h3>
+
+<p>Klube partnere</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+
+{featuredPlayer && (
+
+<div className="hero-right">
+
+<div className="hero-phone-frame">
+
+<div className="hero-phone-notch"></div>
+
+<div className="hero-phone-screen">
+
+<div className="hero-img-wrapper">
+
+<PlayerCard player={featuredPlayer} />
+
+</div>
+
+</div>
+
+<div className="hero-phone-home-indicator"></div>
+
+</div>
+
+</div>
+
+)}
+
+
+</section>
+
+);
 
 }
 
