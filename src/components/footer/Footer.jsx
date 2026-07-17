@@ -31,26 +31,26 @@ function Footer() {
             <h3>Llogaria</h3>
             <Link to="/login">Hyr</Link>
             <Link to="/register">Regjistrohu</Link>
-            <Link to="/scouts">Scoutët</Link>
+            <Link to="/player-scout">Scoutët</Link>
           </div>
 
           <div className="footer-column">
             <h3>Na ndiq</h3>
-            <a href="#instagram" aria-label="Talento11 në Instagram"><FaInstagram /> Instagram</a>
-            <a href="#facebook" aria-label="Talento11 në Facebook"><FaFacebookF /> Facebook</a>
-            <a href="#tiktok" aria-label="Talento11 në TikTok"><FaTiktok /> TikTok</a>
+            <a href="https://www.instagram.com/ftbaza.app/" aria-label="Talento11 në Instagram"><FaInstagram /> Instagram</a>
+            <a href="https://www.facebook.com/share/1CtfbwtHMD/" aria-label="Talento11 në Facebook"><FaFacebookF /> Facebook</a>
+            <a href="https://www.tiktok.com/@ftbaza.app" aria-label="Talento11 në TikTok"><FaTiktok /> TikTok</a>
           </div>
 
           <div className="footer-column footer-contact">
             <h3>Kontakt</h3>
-            <a href="mailto:info@talento11.com">info@talento11.com</a>
+            <a href="mailto:ftbazateam@gmail.com">ftbazateam@gmail.com</a>
             <p>Për pyetje, sugjerime ose bashkëpunime.</p>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <span>© 2026 Talento11. Të gjitha të drejtat e rezervuara.</span>
+        <span>© 2026 FtBaza. Të gjitha të drejtat e rezervuara.</span>
         <span>Ndërtuar për futbollin shqiptar.</span>
       </div>
     </footer>
