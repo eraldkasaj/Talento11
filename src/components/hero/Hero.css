@@ -302,7 +302,7 @@
 
 .hero-phone-showcase {
   position: relative;
-  width: clamp(370px, 34vw, 520px);
+  width: clamp(300px, 26vw, 400px);
   aspect-ratio: 1117 / 1599;
   animation: hero-phone-art-float 6s ease-in-out infinite;
   filter: drop-shadow(0 34px 42px rgba(0, 0, 0, 0.42));
@@ -322,9 +322,9 @@
 }
 
 @media (max-width: 900px) {
-  .hero-phone-showcase { width: min(470px, 92vw); }
+  .hero-phone-showcase { width: min(360px, 80vw); }
 }
 
 @media (max-width: 480px) {
-  .hero-phone-showcase { width: min(360px, 95vw); }
+  .hero-phone-showcase { width: min(280px, 85vw); }
 }

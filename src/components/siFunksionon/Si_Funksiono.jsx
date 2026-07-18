@@ -34,7 +34,7 @@ function Si_Funksionon() {
 
           <p>
             Krijo një llogari falas dhe bëhu pjesë
-            e platformës Talento11.
+            e platformës FtBaza.
           </p>
         </div>
 

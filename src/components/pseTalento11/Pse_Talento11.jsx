@@ -71,16 +71,15 @@ function Pse_Talento11() {
 
       </div>
 
-      <div className="profile-preview-intro">
+     <div className="profile-preview-intro">
         <div>
           <span>PREVIEW I PROFILIT</span>
           <h3>Gjithçka që duhet të dijë një scout</h3>
         </div>
         <div className="profile-preview-tags">
-          <span>17 vjeç</span>
-          <span>CAM</span>
-          <span>Dinamo</span>
-          <span>11 gola</span>
+          <span>Profil live</span>
+          <span>Video & Statistika</span>
+          <span>Verifikuar nga FtBaza</span>
         </div>
       </div>
 
