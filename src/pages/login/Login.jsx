@@ -118,7 +118,7 @@ setError("Ndodhi një gabim. Provo përsëri.");
         <h1>Hyr</h1>
 
         <p>
-          Mirë se u ktheve në Talento11.
+          Mirë se u ktheve në Footbaz.
         </p>
 
            {error && (

@@ -202,13 +202,13 @@ return(
 
 <div className="players-header">
 
-<span className="players-eyebrow">Talento11</span>
+<span className="players-eyebrow">Footbaz</span>
 
 <h1>Lojtarët</h1>
 
 <p>
 
-Zbulo talentet e platformës Talento11.
+Zbulo talentet e platformës Footbaz.
 
 </p>
 

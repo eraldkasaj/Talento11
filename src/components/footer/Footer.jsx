@@ -23,7 +23,7 @@ function Footer() {
           <div className="footer-column">
             <h3>Platforma</h3>
             <Link to="/#si-funksionon">Si funksionon?</Link>
-            <Link to="/#pse-talento11">Pse Talento11?</Link>
+            <Link to="/#pse-talento11">Pse Footbaz?</Link>
             <Link to="/players">Lojtarët</Link>
           </div>
 
@@ -36,21 +36,21 @@ function Footer() {
 
           <div className="footer-column">
             <h3>Na ndiq</h3>
-            <a href="https://www.instagram.com/ftbaza.app/" aria-label="Talento11 në Instagram"><FaInstagram /> Instagram</a>
-            <a href="https://www.facebook.com/share/1CtfbwtHMD/" aria-label="Talento11 në Facebook"><FaFacebookF /> Facebook</a>
-            <a href="https://www.tiktok.com/@ftbaza.app" aria-label="Talento11 në TikTok"><FaTiktok /> TikTok</a>
+            <a href="https://www.instagram.com/footbaz.app/" aria-label="Footbaz në Instagram"><FaInstagram /> Instagram</a>
+            <a href="https://www.facebook.com/share/1D75RejGYw/" aria-label="Footbaz në Facebook"><FaFacebookF /> Facebook</a>
+            <a href="https://www.tiktok.com/@footbaz.app" aria-label="Footbaz në TikTok"><FaTiktok /> TikTok</a>
           </div>
 
           <div className="footer-column footer-contact">
             <h3>Kontakt</h3>
-            <a href="mailto:ftbazateam@gmail.com">ftbazateam@gmail.com</a>
+            <a href="mailto:footbazinfo@gmail.com">footbazinfo@gmail.com</a>
             <p>Për pyetje, sugjerime ose bashkëpunime.</p>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <span>© 2026 FtBaza. Të gjitha të drejtat e rezervuara.</span>
+        <span>© 2026 Footbaz. Të gjitha të drejtat e rezervuara.</span>
         <span>Ndërtuar për futbollin shqiptar.</span>
       </div>
     </footer>
