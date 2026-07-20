@@ -15,7 +15,7 @@ function Pse_Talento11() {
 
       <div className="pse-header">
         <span className="pse-eyebrow">NJË PROFIL QË FLET PËR TY</span>
-        <h2>Pse Talento11?</h2>
+        <h2>Pse Footbaz?</h2>
         <p>
           Shfaq talentin tënd me një profil profesional, statistika të qarta
           dhe videot që scoutët duan të shohin.
@@ -79,7 +79,7 @@ function Pse_Talento11() {
         <div className="profile-preview-tags">
           <span>Profil live</span>
           <span>Video & Statistika</span>
-          <span>Verifikuar nga FtBaza</span>
+          <span>Verifikuar nga Footbaz</span>
         </div>
       </div>
 

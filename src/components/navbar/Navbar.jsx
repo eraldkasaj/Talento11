@@ -48,7 +48,7 @@ function Navbar() {
 
           <Link to="/#pse-talento11" onClick={closeMenu}>
 
-            Pse FtBaza ?
+            Pse Footbaz ?
 
           </Link>
 

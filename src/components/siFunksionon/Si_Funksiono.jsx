@@ -34,7 +34,7 @@ function Si_Funksionon() {
 
           <p>
             Krijo një llogari falas dhe bëhu pjesë
-            e platformës FtBaza.
+            e platformës Footbaz.
           </p>
         </div>
 

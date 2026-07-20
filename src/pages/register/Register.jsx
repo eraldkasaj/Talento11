@@ -153,7 +153,7 @@ className="register-logo"
 
 
 <p>
-Bashkohu me komunitetin Talento11.
+Bashkohu me komunitetin Footbaz.
 </p>
 
 
