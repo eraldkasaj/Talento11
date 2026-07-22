@@ -10,6 +10,8 @@
     padding:40px;
 
     position:relative;
+
+    box-sizing:border-box;
 }
 
 .register-back{
@@ -34,6 +36,7 @@
 .register-card{
 
     width:500px;
+    max-width:100%;
 
     background:var(--bg-secondary);
 
@@ -42,6 +45,8 @@
     border-radius:24px;
 
     padding:45px;
+
+    box-sizing:border-box;
 }
 
 .register-logo{
@@ -92,6 +97,7 @@
 .register-form input[type="password"]{
 
     height:56px;
+    width:100%;
 
     border:1px solid var(--border);
 
@@ -104,6 +110,8 @@
     padding:0 18px;
 
     font-size:1rem;
+
+    box-sizing:border-box;
 }
 
 .register-form input:focus{
@@ -202,4 +210,27 @@ border-radius:10px;
 margin-bottom:20px;
 text-align:center;
 font-weight:600;
+}
+
+/* ========================= */
+/* RESPONSIVE - MOBILE */
+/* ========================= */
+
+@media (max-width: 600px){
+    .register{
+        padding:24px 16px;
+    }
+
+    .register-card{
+        padding:28px 22px;
+    }
+
+    .register-back{
+        margin-bottom:16px;
+        font-size:0.85rem;
+    }
+
+    .role-select{
+        gap:24px;
+    }
 }

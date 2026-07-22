@@ -200,6 +200,14 @@
   background: var(--border);
 }
 
+/* "Coming soon" variant for stats that aren't live yet (e.g. scouts) */
+
+.hero-stat-soon {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand-teal);
+}
+
 /* ===================== Right side / phone showcase ===================== */
 
 .hero-right {

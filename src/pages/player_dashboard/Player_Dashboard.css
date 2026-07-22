@@ -720,7 +720,47 @@
   .talento-player-hero { grid-template-columns: 1fr; }
   .talento-player-photo { width: 125px; height: 150px; }
   .talento-player-about { align-items: flex-start; flex-direction: column; }
-  .talento-player-pitch { flex-basis: 135px; }
+  .talento-player-pitch {
+    flex: none;
+    width: 135px;
+    height: 82px;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+  .talento-player-career-entry { align-items: flex-start; flex-wrap: wrap; }
+  .talento-player-career-entry time { width: 100%; margin-left: 53px; }
+}
+@media (max-width: 520px) {
+  .talento-player-actions { justify-content: flex-start; flex-wrap: wrap; padding: 12px 12px 0; }
+  .talento-player-actions button { padding: 7px 8px; font-size: 0.72rem; }
+  .talento-player-hero { grid-template-columns: 1fr; }
+  .talento-player-photo { width: 125px; height: 150px; }
+  .talento-player-about { align-items: flex-start; flex-direction: column; }
+
+  .talento-player-pitch {
+    flex: none;
+    width: 135px;
+    height: 82px;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+
+  .talento-player-pitch-box {
+    top: 20px;
+    height: 41px;
+    width: 18px;
+  }
+
+  .talento-player-pitch-center {
+    width: 24px;
+    height: 24px;
+  }
+
+  .talento-player-pitch > span {
+    width: 12px;
+    height: 12px;
+  }
+
   .talento-player-career-entry { align-items: flex-start; flex-wrap: wrap; }
   .talento-player-career-entry time { width: 100%; margin-left: 53px; }
 }
