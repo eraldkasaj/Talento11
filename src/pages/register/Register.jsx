@@ -1,335 +1,335 @@
 import "./Register.css";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo_img from "../../assets/images/logo.png";
 
 import { useState } from "react";
 
-import { auth,db } from "../../firebase/firebase";
+import { auth, db } from "../../firebase/firebase";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
-import { ref,set } from "firebase/database";
+import { ref, set } from "firebase/database";
 
 import { LuArrowLeft } from "react-icons/lu";
 
 
 
-function Register(){
+function Register() {
 
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
 
-const [name,setName] = useState("");
-const [surname,setSurname] = useState("");
-const [email,setEmail] = useState("");
-const [password,setPassword] = useState("");
-const [confirmPassword,setConfirmPassword] = useState("");
-const [error,setError] = useState("");
-const [success,setSuccess] = useState("");
-const [role,setRole] = useState("player");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [role, setRole] = useState("player");
 
 
 
-const handleRegister = async(e)=>{
+  const handleRegister = async (e) => {
 
 
-e.preventDefault();
+    e.preventDefault();
 
-setError("");
-setSuccess("");
+    setError("");
+    setSuccess("");
 
-if(!name || !surname || !email || !password || !confirmPassword){
+    if (!name || !surname || !email || !password || !confirmPassword) {
 
-setError("Plotësoni të gjitha fushat.");
+      setError("Plotësoni të gjitha fushat.");
 
-return;
+      return;
 
-}
+    }
 
-if(password !== confirmPassword){
+    if (password !== confirmPassword) {
 
-setError("Fjalëkalimet nuk përputhen.");
+      setError("Fjalëkalimet nuk përputhen.");
 
-return;
+      return;
 
-}
+    }
 
 
-try{
+    try {
 
 
-const userCredential = await createUserWithEmailAndPassword(
-auth,
-email,
-password
-);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
 
-const user = userCredential.user;
+      const user = userCredential.user;
 
 
 
-await set(ref(db,"users/" + user.uid),{
+      await set(ref(db, "users/" + user.uid), {
 
-name:name,
-surname:surname,
-email:email,
-role:role,
-createdAt:new Date().toISOString()
+        name: name,
+        surname: surname,
+        email: email,
+        role: role,
+        createdAt: new Date().toISOString()
 
-});
+      });
 
 
-setSuccess("Llogaria u krijua me sukses. Po ridrejtoheni te Login...");
+      setSuccess("Llogaria u krijua me sukses. Po ridrejtoheni te Login...");
 
-setTimeout(()=>{
+      setTimeout(() => {
 
-navigate("/login");
+        navigate("/login");
 
-},2000);
+      }, 2000);
 
 
-}
-catch(error){
+    }
+    catch (error) {
 
-if(error.code === "auth/email-already-in-use"){
+      if (error.code === "auth/email-already-in-use") {
 
-setError("Ky email është përdorur më parë.");
+        setError("Ky email është përdorur më parë.");
 
-}
+      }
 
-else if(error.code === "auth/weak-password"){
+      else if (error.code === "auth/weak-password") {
 
-setError("Fjalëkalimi duhet të ketë të paktën 6 karaktere.");
+        setError("Fjalëkalimi duhet të ketë të paktën 6 karaktere.");
 
-}
+      }
 
-else if(error.code === "auth/invalid-email"){
+      else if (error.code === "auth/invalid-email") {
 
-setError("Email-i nuk është i vlefshëm.");
+        setError("Email-i nuk është i vlefshëm.");
 
-}
+      }
 
-else{
+      else {
 
-setError("Ndodhi një gabim. Provo përsëri.");
+        setError("Ndodhi një gabim. Provo përsëri.");
 
-}
+      }
 
-}
+    }
 
 
-}
+  }
 
 
 
 
-return(
+  return (
 
 
-<section className="register">
+    <section className="register">
 
 
-<Link to="/" className="register-back">
-<LuArrowLeft /> Kthehu në faqen kryesore
-</Link>
+      <Link to="/" className="register-back">
+        <LuArrowLeft /> Kthehu në faqen kryesore
+      </Link>
 
 
-<div className="register-card">
+      <div className="register-card">
 
 
-<Link to="/">
-<img
-src={logo_img}
-alt="Talento11"
-className="register-logo"
-/>
-</Link>
+        <Link to="/">
+          <img
+            src={logo_img}
+            alt="Talento11"
+            className="register-logo"
+          />
+        </Link>
 
 
 
-<h1>Krijo Llogari</h1>
+        <h1>Krijo Llogari</h1>
 
 
-<p>
-Bashkohu me komunitetin Footbaz.
-</p>
+        <p>
+          Bashkohu me komunitetin Footbaz.
+        </p>
 
 
-        
- {error && (
 
- <p className="register-error">
+        {error && (
 
- {error}
+          <p className="register-error">
 
-</p> )}
+            {error}
 
- {success && (
+          </p>)}
 
- <p className="register-success"> {success} </p>
+        {success && (
 
-    )}
-        
-<form
-className="register-form"
-onSubmit={handleRegister}
->
+          <p className="register-success"> {success} </p>
 
+        )}
 
+        <form
+          className="register-form"
+          onSubmit={handleRegister}
+        >
 
 
-<input
-type="text"
-placeholder="Emri"
-value={name}
-onChange={(e)=>setName(e.target.value)}
-/>
 
 
+          <input
+            type="text"
+            placeholder="Emri"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
 
 
-<input
-type="text"
-placeholder="Mbiemri"
-value={surname}
-onChange={(e)=>setSurname(e.target.value)}
-/>
 
 
+          <input
+            type="text"
+            placeholder="Mbiemri"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+          />
 
 
 
-<input
-type="email"
-placeholder="Email"
-value={email}
-onChange={(e)=>setEmail(e.target.value)}
-autoComplete="email"
-/>
 
-<input
-type="password"
-placeholder="Password"
-value={password}
-onChange={(e)=>setPassword(e.target.value)}
-autoComplete="current-password"
-/>
 
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
 
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
 
 
 
-<input
-type="password"
-placeholder="Konfirmo Password"
-value={confirmPassword}
-onChange={(e)=>setConfirmPassword(e.target.value)}
-/>
 
 
+          <input
+            type="password"
+            placeholder="Konfirmo Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
 
 
 
 
 
-<div className="role-select">
 
 
+          <div className="role-select">
 
-<label>
 
 
-<input
-type="radio"
-name="role"
-value="player"
-checked={role === "player"}
-onChange={(e)=>setRole(e.target.value)}
-/>
+            <label>
 
 
-Lojtar
+              <input
+                type="radio"
+                name="role"
+                value="player"
+                checked={role === "player"}
+                onChange={(e) => setRole(e.target.value)}
+              />
 
 
-</label>
+              Lojtar
 
 
+            </label>
 
 
 
-<label>
 
 
-<input
-type="radio"
-name="role"
-value="scout"
-checked={role === "scout"}
-onChange={(e)=>setRole(e.target.value)}
-/>
+            <label>
 
 
-Scout
+              <input
+                type="radio"
+                name="role"
+                value="scout"
+                checked={role === "scout"}
+                onChange={(e) => setRole(e.target.value)}
+              />
 
 
-</label>
+              Scout
 
 
+            </label>
 
-</div>
 
 
+          </div>
 
 
 
 
 
-<button type="submit">
 
-Regjistrohu
 
-</button>
+          <button type="submit">
 
+            Regjistrohu
 
+          </button>
 
 
-</form>
 
 
+        </form>
 
 
 
 
 
-<span>
 
 
-Ke tashmë llogari?
+        <span>
 
 
-<Link to="/login">
+          Ke tashmë llogari?
 
-Hyr
 
-</Link>
+          <Link to="/login">
 
+            Hyr
 
+          </Link>
 
-</span>
 
 
+        </span>
 
 
 
-</div>
 
 
-</section>
+      </div>
 
 
-)
+    </section>
+
+
+  )
 
 
 }
