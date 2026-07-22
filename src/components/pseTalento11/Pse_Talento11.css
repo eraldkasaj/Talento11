@@ -1,7 +1,16 @@
-.pse-talento11 {
-  padding: 112px 100px;
+/* ===================== Wrapper (full-width background) ===================== */
 
+.pse-talento11-wrapper {
   background: var(--bg-primary);
+}
+
+/* ===================== Section (centered content container) ===================== */
+
+.pse-talento11 {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  padding: 112px 100px;
 }
 
 /* ========================= */
@@ -136,8 +145,7 @@
   display: flex;
   justify-content: space-between;
   align-items: end;
-  max-width: 1200px;
-  margin: 0 auto 22px;
+  margin: 0 0 22px;
 }
 
 .profile-preview-intro > div > span {
